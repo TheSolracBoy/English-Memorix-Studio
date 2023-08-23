@@ -1,0 +1,47 @@
+{
+  "name": "memorygame",
+  "frontend:build": "npm run build",
+  "frontend:install": "npm install",
+  "frontend:dev": "",
+  "frontend:dev:build": "",
+  "frontend:dev:install": "",
+  "frontend:dev:watcher": "npm run dev",
+  "frontend:dev:serverUrl": "auto",
+  "wailsjsdir": "C:/Users/carlo/dev/work/TCU-memory-game-maker/frontend",
+  "version": "2",
+  "projectdir": "C:\\Users\\carlo\\dev\\work\\TCU-memory-game-maker",
+  "build:dir": "build",
+  "outputfilename": "memorygame.exe",
+  "OutputType": "",
+  "Platform": "",
+  "runNonNativeBuildHooks": false,
+  "postBuildHooks": null,
+  "preBuildHooks": null,
+  "Author": {
+    "name": "",
+    "email": "carlos.ace27@gmail.com"
+  },
+  "Info": {
+    "companyName": "memorygame",
+    "productName": "memorygame",
+    "productVersion": "1.0.0",
+    "copyright": "Copyright.........",
+    "comments": "Built using Wails (https://wails.io)",
+    "fileAssociations": null,
+    "protocols": null
+  },
+  "debounceMS": 3000,
+  "devServer": "localhost:34115",
+  "appargs": "",
+  "nsisType": "multiple",
+  "obfuscated": false,
+  "garbleargs": "",
+  "frontend:dir": "frontend",
+  "bindings": {
+    "ts_generation": {
+      "prefix": "",
+      "suffix": "",
+      "outputType": ""
+    }
+  }
+}
