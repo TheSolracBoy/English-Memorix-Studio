@@ -8,12 +8,18 @@ export const SelectMode = () => {
         <p className="">Mode</p>
       </div>
 
-      <Link to="/admin/games" className="flex flex-1 flex-col items-center justify-center bg-secondary text-center text-4xl font-bold transition-all hover:cursor-pointer hover:bg-sky-400 hover:text-6xl">
+      <Link
+        to="/admin/games"
+        className="flex flex-1 flex-col items-center justify-center bg-secondary text-center text-4xl font-bold transition-all hover:cursor-pointer hover:bg-sky-400 hover:text-6xl"
+      >
         Admin Mode
       </Link>
-      <a  className=" flex flex-1 flex-col items-center justify-center bg-sky-600 text-center text-4xl font-bold transition-all hover:cursor-pointer hover:bg-sky-400 hover:text-6xl">
+      <Link
+        to={"/play"}
+        className=" flex flex-1 flex-col items-center justify-center bg-sky-600 text-center text-4xl font-bold transition-all hover:cursor-pointer hover:bg-sky-400 hover:text-6xl"
+      >
         Play Mode
-      </a>
+      </Link>
     </div>
   );
 };

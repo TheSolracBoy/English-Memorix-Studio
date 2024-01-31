@@ -1,4 +1,5 @@
 import { getBinaryFromUrl } from "./getBinaryFromUrl";
+import { renderCategories } from "./renderCategories";
 function cleanLongTexts(description: string): string {
   const maxLength = 50;
   const slicedDescription = description.slice(0, maxLength);
@@ -9,4 +10,4 @@ function cleanLongTexts(description: string): string {
   return slicedDescription;
 }
 
-export { getBinaryFromUrl, cleanLongTexts };
+export { getBinaryFromUrl, cleanLongTexts, renderCategories };

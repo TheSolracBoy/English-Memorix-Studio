@@ -123,7 +123,7 @@ func (a *App) EraseCategory(id int) string {
 func (a *App) EditCategory(id uint, newTitle string) error {
 	db, err := database.GetDatabase()
 	if err != nil {
-		return errors.New("Database unset")
+		return errors.New("database unset")
 	}
 
 	var category database.Category
@@ -171,7 +171,7 @@ func (a *App) LoadCategoryName(id int) (string, error) {
 			Title:   "Database Error",
 			Message: "Category doesn't exist",
 		})
-		return "", errors.New("Error Editing")
+		return "", errors.New("error Editing")
 	}
 
 	return category.Title, nil

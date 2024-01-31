@@ -54,8 +54,8 @@ export function LoadCategoryName(arg1) {
   return window['go']['app']['App']['LoadCategoryName'](arg1);
 }
 
-export function LoadGames() {
-  return window['go']['app']['App']['LoadGames']();
+export function LoadGames(arg1, arg2) {
+  return window['go']['app']['App']['LoadGames'](arg1, arg2);
 }
 
 export function SelectImageFolder() {

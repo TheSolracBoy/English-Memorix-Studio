@@ -29,7 +29,7 @@ export function LoadCategories(arg1:number,arg2:number):Promise<Array<database.C
 
 export function LoadCategoryName(arg1:number):Promise<string>;
 
-export function LoadGames():Promise<Array<database.Game>>;
+export function LoadGames(arg1:number,arg2:number):Promise<Array<database.Game>>;
 
 export function SelectImageFolder():Promise<string>;
 
