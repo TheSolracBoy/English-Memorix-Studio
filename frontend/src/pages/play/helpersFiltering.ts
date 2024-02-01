@@ -16,7 +16,6 @@ export function filterGames(
     if (filterByName && !filterByCategory) {
       return hasFilteredGameName(game.title, gameTitleFilter);
     } else if (!filterByName && filterByCategory) {
-      console.log("se");
 
       return hasFilteredCategories(categoriesFilterIDS, game);
     } else if (filterByName && filterByCategory) {
@@ -49,7 +48,6 @@ function hasFilteredCategories(
   if (categoriesFilter.length == 0) {
     return true;
   }
-  console.log("Entra");
 
 
   for (let index = 0; index < categoriesFilter.length; index++) {
@@ -57,9 +55,7 @@ function hasFilteredCategories(
     for (let gameCategoryIndex = 0; gameCategoryIndex < game.categories.length; gameCategoryIndex++) {
 
       const categoryID = game.categories[gameCategoryIndex].id;
-      console.log("comparando", categoriesFilterID, categoryID.toString());
       if (categoriesFilterID == categoryID.toString()) {
-        console.log("Entered in true");
         return true
       }
     }
@@ -71,7 +67,6 @@ function hasFilteredCategories(
 function validNameFilter(name?: string) {
   if (name) {
     if (name !== "") {
-      console.log("valid", name);
       return true;
     }
   }

@@ -24,7 +24,6 @@ export const Categories = () => {
 
   useEffect(() => {
     loadCategories();
-    console.log("Re render");
   }, []);
 
   const [newCategory, setNewCategory] = useState("");
@@ -47,7 +46,6 @@ export const Categories = () => {
     }
     try {
       const categoryID = await CreateNewCategory(newCategory);
-      console.log("Categoryu created", categoryID);
     } catch (error) {
       console.log(error);
     }

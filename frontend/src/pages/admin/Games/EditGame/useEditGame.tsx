@@ -141,7 +141,6 @@ export const useEditGame = (props: Props) => {
       }
 
       setSelectedCategoriesIDs(() => [...temp]);
-      console.log(selectedCategoriesIDs);
     } catch (error) {
       console.log(error);
     }
@@ -150,8 +149,6 @@ export const useEditGame = (props: Props) => {
   async function getGameInformation() {
     try {
       const gameInfo = await GetGameInfo(gameID);
-      console.log("Hey Pairs");
-      console.log(gameInfo.pairs);
 
       setGameTitle(gameInfo.title);
       // setNewGameDescription(gameInfo.description);
@@ -189,7 +186,6 @@ export const useEditGame = (props: Props) => {
   async function handleEditGame() {
     if (showAddNewPair === true) {
       const userWantsToDitchNewPair = await AskUserForConfirmation("Ditch pair", "You are creating a new pair, do you want ditch the new pair and save the changes?")
-      console.log("decision", userWantsToDitchNewPair)
       if (userWantsToDitchNewPair === false) {
         return;
       }
@@ -197,7 +193,6 @@ export const useEditGame = (props: Props) => {
 
     const editGame = await AskUserForConfirmation("Confirm", "Are you sure you want to edit this game?")
     if (editGame === false) {
-      console.log("You are creating a new pair");
       return;
     }
 
@@ -205,8 +200,6 @@ export const useEditGame = (props: Props) => {
     let counter = 0;
     for (const pair of pairs) {
       counter++;
-      console.log("Counter", counter);
-      console.log("Pairs length", pairs.length);
 
       let binaryImage;
       try {
@@ -226,7 +219,6 @@ export const useEditGame = (props: Props) => {
     }
 
     try {
-      console.log(inputPairs);
       await EditGame(
         gameID,
         gameTitle,
@@ -251,7 +243,6 @@ export const useEditGame = (props: Props) => {
   }
 
   async function handleCancelAddNewPair() {
-    console.log(tempPair);
     if (
       tempPair.tempImageCard.image !== null ||
       tempPair.wordCard.word !== ""
@@ -269,7 +260,6 @@ export const useEditGame = (props: Props) => {
   }
 
   const manageFileUpdate = (he: any) => {
-    console.log(he);
     setFiles(he);
   };
 

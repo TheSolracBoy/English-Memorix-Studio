@@ -45,7 +45,7 @@ export const useSelectGame = () => {
         setgames(await games);
         setAllgames(await games);
       } catch (error) {
-        console.log("error in useeffect loading useSelectGamehook");
+        console.log(error);
       }
     };
     load();

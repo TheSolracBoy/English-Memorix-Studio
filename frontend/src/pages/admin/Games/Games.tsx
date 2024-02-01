@@ -19,7 +19,6 @@ export const Games = () => {
 
   useEffect(() => {
     loadGames();
-    console.log("Re render");
   }, []);
 
   const [games, setGames] = useState<database.Game[]>([]);
@@ -28,9 +27,6 @@ export const Games = () => {
 
   async function loadGames() {
     const response = await LoadGames();
-
-    console.log(response);
-
     setGames(response);
   }
 

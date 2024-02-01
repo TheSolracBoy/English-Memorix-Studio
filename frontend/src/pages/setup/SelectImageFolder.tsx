@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 export const SelectImageFolder = () => {
   const navigate = useNavigate();
   async function handleClickSetImageFolder() {
-    console.log("asd");
 
     const result = await SIF();
     if (result == "OK") {
