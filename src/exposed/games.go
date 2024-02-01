@@ -221,3 +221,34 @@ func (a *App) GetCategoriesFromGame(id uint) ([]database.Category, error) {
 
 	return categories, nil
 }
+
+type GetPlayGameInfoReponse struct {
+	GameTitle string          `json:"game_title"`
+	Pairs     []database.Pair `json:"pairs"`
+}
+
+func (a *App) GetPlayGameInfo(id int32) (GetPlayGameInfoReponse, error) {
+	var game database.Game
+	db, err := database.GetDatabase()
+	if err != nil {
+		return GetPlayGameInfoReponse{}, fmt.Errorf("couldn't get database %v", err)
+
+	}
+	err = db.Where("id = ?", id).First(&game).Error
+	if err != nil {
+		return GetPlayGameInfoReponse{}, fmt.Errorf("didn't find game: %v", err)
+	}
+
+	response := GetPlayGameInfoReponse{}
+	response.GameTitle = game.Title
+
+	var pairs []database.Pair
+	err = db.Where("game_id = ?", id).Find(&pairs).Error
+	if err != nil {
+		return GetPlayGameInfoReponse{}, fmt.Errorf("couldn't find pairs: %v", err)
+	}
+
+	response.Pairs = pairs
+	return response, nil
+
+}

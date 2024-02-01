@@ -5,8 +5,9 @@ import { SelectDatabase, SelectImageFolder, SelectMode } from "./pages/setup";
 import { Categories, EditCategory } from "./pages/admin/Categories";
 import { EditGame, Games, NewGame } from "./pages/admin/Games";
 import { Home } from "./pages/setup/Home";
-import { NextUIProvider } from "@nextui-org/react";
 import SelectGame from "./pages/play/SelectGame";
+import { PlayGame } from "./pages/play/PlayGame";
+
 
 function App() {
   return (
@@ -30,10 +31,29 @@ function App() {
         </Route>
         <Route path="/play">
           <Route path="" element={<SelectGame />} />
+          <Route path="/play/:id" element={<PlayGame />} />
         </Route>
+        <Route path="*" element={<Error />}></Route>
       </Routes>
     </HashRouter>
   );
 }
 
 export default App;
+
+
+function Error() {
+  const url = window.location.href
+  return (
+    <>
+      <h1>
+        Page not found:
+      </h1>
+      <h2>
+        You requested {url}
+      </h2>
+
+    </>
+  )
+
+}

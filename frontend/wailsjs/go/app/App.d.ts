@@ -23,6 +23,8 @@ export function GetCategoriesFromGame(arg1:number):Promise<Array<database.Catego
 
 export function GetGameInfo(arg1:number):Promise<app.GameInfo>;
 
+export function GetPlayGameInfo(arg1:number):Promise<app.GetPlayGameInfoReponse>;
+
 export function IsDev():Promise<boolean>;
 
 export function LoadAllCategories():Promise<Array<database.Category>>;

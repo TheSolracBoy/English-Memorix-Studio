@@ -13,7 +13,7 @@ import {
 } from "@nextui-org/react";
 import { cleanLongTexts, renderCategories } from "@/utils";
 import { LogoSplash } from "@/Components/LogoSplash";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Input, Select, Space } from 'antd';
 import type { SelectProps } from 'antd';
@@ -23,45 +23,10 @@ interface GameCardProps {
   game: database.Game;
 }
 
-export function GameRow(props: GameCardProps) {
-  const game = props.game;
-
-
-  return (
-    <TableRow className="text-center ">
-      <TableCell>{game.title}</TableCell>
-      <TableCell>{cleanLongTexts(game.description)}</TableCell>
-      <TableCell>
-        {game.categories.length === 0 ? (
-          <span className="italic text-gray-400">No Categories</span>
-        ) : (
-          <span className="text-gray-600">{renderCategories(game)}</span>
-        )}
-      </TableCell>
-      <TableCell>
-        <Button
-          // onClick={() => handleEditGame(game.id)}
-          size="sm"
-          color="success"
-        >
-          Edit
-        </Button>
-      </TableCell>
-      <TableCell>
-        <Button
-          // onClick={() => handleEraseGame(game.id)}
-          size="sm"
-          color="danger"
-        >
-          Erase
-        </Button>
-      </TableCell>
-    </TableRow>
-  );
-}
 
 export default function SelectGame() {
   const logic = useSelectGame();
+  const navigator = useNavigate()
 
   const options: SelectProps['options'] = [];
 
@@ -134,9 +99,11 @@ export default function SelectGame() {
                   )}
                 </TableCell>
                 <TableCell>
-                  <Button size="sm" color="primary">
-                    Play
-                  </Button>
+                  <Link to={`${game.id}`}>
+                    <Button size="sm" color="primary">
+                      Play
+                    </Button>
+                  </Link>
                 </TableCell>
               </TableRow>
             );

@@ -42,6 +42,10 @@ export function GetGameInfo(arg1) {
   return window['go']['app']['App']['GetGameInfo'](arg1);
 }
 
+export function GetPlayGameInfo(arg1) {
+  return window['go']['app']['App']['GetPlayGameInfo'](arg1);
+}
+
 export function IsDev() {
   return window['go']['app']['App']['IsDev']();
 }
