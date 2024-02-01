@@ -4,19 +4,18 @@ import { LogoSplash } from "../../Components/LogoSplash";
 import { useNavigate } from "react-router-dom";
 
 export const SelectImageFolder = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   async function handleClickSetImageFolder() {
-    console.log("asd");
 
     const result = await SIF();
-    if (result=="OK") {
-      navigate("/selectMode")
+    if (result == "OK") {
+      navigate("/selectMode");
     }
   }
   return (
     <div className="flex h-screen flex-col  items-center  justify-center bg-secondary  ">
       <div className="absolute left-4  top-4 w-32">
-        <LogoSplash />
+        <LogoSplash variant="blue" />
       </div>
 
       <div className="flex flex-1 flex-col  items-center justify-center">

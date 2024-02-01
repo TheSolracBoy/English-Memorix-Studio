@@ -10,3 +10,28 @@ func CantConnectToDatabaseMessage(a *App) {
 		Message: "Couldn't connect to database",
 	})
 }
+
+func NotifyUser() {
+
+}
+
+func (app *App) AskUserForConfirmation(textPrompt string, title string) bool {
+
+	options := runtime.MessageDialogOptions{
+		Type:    runtime.QuestionDialog,
+		Title:   title,
+		Message: textPrompt,
+		Buttons: []string{"Ok", "Cancel"},
+	}
+	result, err := runtime.MessageDialog(app.ctx, options)
+	if err != nil {
+		return false
+
+	}
+	if result == "Ok" {
+		return true
+
+	}
+	return false
+
+}

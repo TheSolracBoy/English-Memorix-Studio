@@ -77,7 +77,6 @@ export default function UploadImage(props: Props) {
           size="sm"
           onClick={() => {
             props.handleSetImage(null);
-            console.log("upload");
           }}
         >
           Reset

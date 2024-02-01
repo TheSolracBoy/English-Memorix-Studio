@@ -46,7 +46,7 @@ func (a *App) CreateNewGame(title string, description string, categories []uint)
 	return fmt.Sprint(newGame.ID), nil
 }
 
-func (a *App) LoadGames(count int, skip int) ([]database.Game, error) {
+func (a *App) LoadGames() ([]database.Game, error) {
 	db, err := database.GetDatabase()
 	if err != nil {
 		return nil, err

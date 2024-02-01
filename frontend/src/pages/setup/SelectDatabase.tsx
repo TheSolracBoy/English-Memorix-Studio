@@ -23,7 +23,7 @@ export const SelectDatabase = () => {
   return (
     <div className="flex h-screen flex-col  items-center  justify-center bg-secondary  ">
       <div className="">
-        <LogoSplash />
+        <LogoSplash variant="blue" />
       </div>
       <div className=" flex flex-col items-center justify-center">
         <h1 className="mt-2  text-3xl font-bold text-cyan-900 ">

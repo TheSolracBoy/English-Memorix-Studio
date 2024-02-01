@@ -11,17 +11,14 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { EraseGame, LoadGames } from "../../../../wailsjs/go/app/App";
 import { AdminLayout } from "../../../layouts/AdminLayout";
-import { cleanLongTexts } from "../../../utils";
+import { cleanLongTexts, renderCategories } from "../../../utils";
 import { database } from "../../../../wailsjs/go/models";
-
-const maxVisibleCategoriesCount = 3;
 
 export const Games = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
     loadGames();
-    console.log("Re render");
   }, []);
 
   const [games, setGames] = useState<database.Game[]>([]);
@@ -29,10 +26,7 @@ export const Games = () => {
   const rowsPerPage = 20;
 
   async function loadGames() {
-    const response = await LoadGames(rowsPerPage, (page - 1) * rowsPerPage);
-
-    console.log(response);
-
+    const response = await LoadGames();
     setGames(response);
   }
 
@@ -50,27 +44,6 @@ export const Games = () => {
 
   function handleAddGameButton() {
     navigate("newGame");
-  }
-
-  function renderCategories(game: database.Game) {
-    if (game.categories.length === 0) {
-      return "";
-    }
-    let categoriesText = game.categories[0].title;
-
-    for (
-      let index = 1;
-      index < game.categories.length || index === maxVisibleCategoriesCount;
-      index++
-    ) {
-      categoriesText += ", " + game.categories[index].title;
-    }
-
-    if (game.categories.length > 3) {
-      categoriesText += "...";
-    }
-
-    return categoriesText;
   }
 
   return (

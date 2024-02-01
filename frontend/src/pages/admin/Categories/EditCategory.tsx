@@ -14,11 +14,9 @@ export const EditCategory = () => {
 
   async function setInfo() {
     const id = Number(params.id);
-    console.log(id);
     const title = await LoadCategoryName(id);
     setTitle(title);
     setNewCategory(title);
-    console.log(title);
   }
 
   useEffect(() => {

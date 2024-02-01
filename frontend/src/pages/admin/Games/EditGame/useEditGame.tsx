@@ -6,6 +6,7 @@ import {
   GetGameInfo,
   LoadAllCategories,
   EditGame,
+  AskUserForConfirmation,
 } from "../../../../../wailsjs/go/app/App";
 
 import { useNavigate } from "react-router-dom";
@@ -140,7 +141,6 @@ export const useEditGame = (props: Props) => {
       }
 
       setSelectedCategoriesIDs(() => [...temp]);
-      console.log(selectedCategoriesIDs);
     } catch (error) {
       console.log(error);
     }
@@ -149,8 +149,6 @@ export const useEditGame = (props: Props) => {
   async function getGameInformation() {
     try {
       const gameInfo = await GetGameInfo(gameID);
-      console.log("Hey Pairs");
-      console.log(gameInfo.pairs);
 
       setGameTitle(gameInfo.title);
       // setNewGameDescription(gameInfo.description);
@@ -187,18 +185,14 @@ export const useEditGame = (props: Props) => {
 
   async function handleEditGame() {
     if (showAddNewPair === true) {
-      console.log("You are creating a new pair");
-      const userWantsToDitchNewPair = confirm(
-        "You are creating a new pair, do you want ditch the new pair and save the changes?",
-      );
+      const userWantsToDitchNewPair = await AskUserForConfirmation("Ditch pair", "You are creating a new pair, do you want ditch the new pair and save the changes?")
       if (userWantsToDitchNewPair === false) {
         return;
       }
     }
 
-    const editGame = confirm("Are you sure you want to edit this game?");
+    const editGame = await AskUserForConfirmation("Confirm", "Are you sure you want to edit this game?")
     if (editGame === false) {
-      console.log("You are creating a new pair");
       return;
     }
 
@@ -206,8 +200,6 @@ export const useEditGame = (props: Props) => {
     let counter = 0;
     for (const pair of pairs) {
       counter++;
-      console.log("Counter", counter);
-      console.log("Pairs length", pairs.length);
 
       let binaryImage;
       try {
@@ -227,7 +219,6 @@ export const useEditGame = (props: Props) => {
     }
 
     try {
-      console.log(inputPairs);
       await EditGame(
         gameID,
         gameTitle,
@@ -243,23 +234,21 @@ export const useEditGame = (props: Props) => {
     navigator("../");
   }
 
-  function handleCancelButton() {
-    const userConfirmCancelEdit = confirm("Are you sure you want to cancel?");
+  async function handleCancelButton() {
+    const userConfirmCancelEdit = await AskUserForConfirmation("Cancel", "Are you sure you want to cancel?")
     if (!userConfirmCancelEdit) {
       return;
     }
     navigator("../");
   }
 
-  function handleCancelAddNewPair() {
-    console.log(tempPair);
+  async function handleCancelAddNewPair() {
     if (
       tempPair.tempImageCard.image !== null ||
       tempPair.wordCard.word !== ""
     ) {
-      const userWantsToCancel = confirm(
-        "Creating new pair in progress, do you want to cancel?",
-      );
+      const userWantsToCancel = await AskUserForConfirmation("Cancel", "Creating new pair in progress, do you want to cancel?")
+
       if (!userWantsToCancel) {
         return;
       }
@@ -271,7 +260,6 @@ export const useEditGame = (props: Props) => {
   }
 
   const manageFileUpdate = (he: any) => {
-    console.log(he);
     setFiles(he);
   };
 
