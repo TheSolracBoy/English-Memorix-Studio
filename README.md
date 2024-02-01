@@ -5,16 +5,8 @@ Welcome to English Memorix Studio, your go-to memory game maker app for desktop 
 ## Features
 
 - **Easy Game Creation:** Design customized memory games with a user-friendly interface.
-- **Versatile Templates:** Choose from a variety of templates or create your own to match your theme.
-- **Multimedia Integration:** Enhance your games with images, audio, and video for a captivating learning experience.
+- **Multimedia Integration:** Resize your images inside the app
 - **Desktop Compatibility:** English Memorix Studio supports Windows, macOS, and Linux, providing a seamless experience on your preferred desktop platform.
-
-## Live Development
-
-To run in live development mode, run `wails dev` in the project directory. This will run a Vite development
-server that will provide very fast hot reload of your frontend changes. If you want to develop in a browser
-and have access to your Go methods, there is also a dev server that runs on http://localhost:34115. Connect
-to this in your browser, and you can call your Go code from devtools.
 
 ## Building
 
