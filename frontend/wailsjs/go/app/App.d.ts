@@ -3,6 +3,8 @@
 import {app} from '../models';
 import {database} from '../models';
 
+export function AskUserForConfirmation(arg1:string,arg2:string):Promise<boolean>;
+
 export function CreateDatabase():Promise<string>;
 
 export function CreateNewCategory(arg1:string):Promise<string>;

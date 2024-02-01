@@ -9,32 +9,32 @@ export const useSelectGame = () => {
   const [searchInput, setSearchInput] = useState("");
   const timeoutIdRef = useRef<NodeJS.Timeout | null>(null); // Persist the timeout between renders
   const [allCategories, setAllCatetories] = useState<database.Category[]>([]);
-  const [categoriesFilter, setCategoriesFilter] = useState<database.Category[]>(
-    [],
-  );
+  const categoriesFilterIDS = useRef<string[]>([])
 
   // Make a debounce when filtering to optimize resources
   function triggerFilter(
-    newValue: string,
-    categoriesFilter: database.Category[],
+    gameTitleFilter: string,
+    categoriesFilter: string[],
   ) {
-    console.log("clear ");
     if (timeoutIdRef.current) {
       clearTimeout(timeoutIdRef.current);
     }
     timeoutIdRef.current = setTimeout(() => {
-      console.log("Busca", newValue);
-      const filteredGames = filterGames(allGames, newValue, categoriesFilter);
+      const filteredGames = filterGames(allGames, categoriesFilter, gameTitleFilter,);
       setgames(filteredGames);
     }, 400);
   }
 
-  function handleSearchInputChange(newValue: string) {
-    setSearchInput(newValue);
-    triggerFilter(newValue, categoriesFilter);
+  function handleSearchInputChange(newGameTitleFilter: string) {
+    setSearchInput(newGameTitleFilter);
+    triggerFilter(newGameTitleFilter, categoriesFilterIDS.current);
   }
 
-  function handleFilterCategoriesChange(id: number) {}
+  function handleFilterCategoriesChange(newGameCategoriesIDSFilter: string[]) {
+    categoriesFilterIDS.current = newGameCategoriesIDSFilter
+    const filteredGames = filterGames(allGames, newGameCategoriesIDSFilter, searchInput,);
+    setgames(filteredGames);
+  }
 
   useEffect(() => {
     const load = async () => {
@@ -50,7 +50,7 @@ export const useSelectGame = () => {
     };
     load();
 
-    return () => {};
+    return () => { };
   }, []);
 
   return {
@@ -58,7 +58,8 @@ export const useSelectGame = () => {
     searchInput,
     setSearchInput,
     handleSearchInputChange,
-    categoriesFilter,
+    handleFilterCategoriesChange,
+    categoriesFilterIDS,
     allCategories,
   };
 };

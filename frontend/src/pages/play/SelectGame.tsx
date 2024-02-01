@@ -4,9 +4,6 @@ import { database } from "../../../wailsjs/go/models";
 import {
   Button,
   Card,
-  Input,
-  Select,
-  SelectItem,
   Table,
   TableBody,
   TableCell,
@@ -17,6 +14,10 @@ import {
 import { cleanLongTexts, renderCategories } from "@/utils";
 import { LogoSplash } from "@/Components/LogoSplash";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Input, Select, Space } from 'antd';
+import type { SelectProps } from 'antd';
+
 
 interface GameCardProps {
   game: database.Game;
@@ -24,6 +25,8 @@ interface GameCardProps {
 
 export function GameRow(props: GameCardProps) {
   const game = props.game;
+
+
   return (
     <TableRow className="text-center ">
       <TableCell>{game.title}</TableCell>
@@ -59,6 +62,20 @@ export function GameRow(props: GameCardProps) {
 
 export default function SelectGame() {
   const logic = useSelectGame();
+
+  const options: SelectProps['options'] = [];
+
+  for (let i = 0; i < logic.allCategories.length; i++) {
+    options.push({
+      label: logic.allCategories[i].title,
+      value: logic.allCategories[i].id,
+    });
+  }
+
+  const handleChange = (value: string[]) => {
+    logic.handleFilterCategoriesChange(value)
+  };
+
   return (
     <GameLayout title="Select Game">
       <Link to={"/selectMode"} className="w-20">
@@ -73,19 +90,18 @@ export default function SelectGame() {
             logic.handleSearchInputChange(e.target.value);
           }}
           placeholder="Search"
-          size="sm"
+          size="middle"
         ></Input>
 
         <h2 className=" mb-1 font-bold">Filter by category</h2>
-        <Select placeholder="Select categories" size="sm" multiple={true}>
-          {logic.allCategories.map((category) => {
-            return (
-              <SelectItem key={category.id} value={category.id}>
-                {category.title}
-              </SelectItem>
-            );
-          })}
-        </Select>
+        <Select
+          mode="multiple"
+          allowClear
+          style={{ width: '100%' }}
+          placeholder="Please select"
+          onChange={handleChange}
+          options={options}
+        />
       </div>
       <Table className="mt-4">
         <TableHeader>

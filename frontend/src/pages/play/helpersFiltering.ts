@@ -1,5 +1,37 @@
 import { database } from "../../../wailsjs/go/models";
 
+export function filterGames(
+  games: database.Game[],
+  categoriesFilterIDS: string[],
+  gameTitleFilter: string,
+): database.Game[] {
+  const filterByName = validNameFilter(gameTitleFilter);
+  const filterByCategory = validDatabaseCategories(categoriesFilterIDS);
+
+  if (!filterByName && !filterByCategory) {
+    return games;
+  }
+
+  const gamesFiltered = games.filter((game) => {
+    if (filterByName && !filterByCategory) {
+      return hasFilteredGameName(game.title, gameTitleFilter);
+    } else if (!filterByName && filterByCategory) {
+      console.log("se");
+
+      return hasFilteredCategories(categoriesFilterIDS, game);
+    } else if (filterByName && filterByCategory) {
+      return (
+        hasFilteredGameName(game.title, gameTitleFilter) &&
+        hasFilteredCategories(categoriesFilterIDS, game)
+      );
+    } else {
+      return true;
+    }
+  });
+
+  return gamesFiltered;
+}
+
 function hasFilteredGameName(gameName: string, filter: string): boolean {
   filter = filter.toUpperCase();
   filter = filter.replaceAll(" ", "");
@@ -11,18 +43,28 @@ function hasFilteredGameName(gameName: string, filter: string): boolean {
 }
 
 function hasFilteredCategories(
-  categoriesFilter: database.Category[],
+  categoriesFilter: string[],
   game: database.Game,
 ): boolean {
   if (categoriesFilter.length == 0) {
     return true;
   }
+  console.log("Entra");
 
-  categoriesFilter.forEach((category) => {
-    if (game.categories.includes(category)) {
-      return true;
+
+  for (let index = 0; index < categoriesFilter.length; index++) {
+    const categoriesFilterID = categoriesFilter[index];
+    for (let gameCategoryIndex = 0; gameCategoryIndex < game.categories.length; gameCategoryIndex++) {
+
+      const categoryID = game.categories[gameCategoryIndex].id;
+      console.log("comparando", categoriesFilterID, categoryID.toString());
+      if (categoriesFilterID == categoryID.toString()) {
+        console.log("Entered in true");
+        return true
+      }
     }
-  });
+  }
+
   return false;
 }
 
@@ -36,46 +78,11 @@ function validNameFilter(name?: string) {
   return false;
 }
 
-function validDatabaseCategories(categories?: database.Category[]) {
+function validDatabaseCategories(categories?: string[]) {
   if (categories) {
     if (categories.length > 0) {
       return true;
     }
   }
   return false;
-}
-
-export function filterGames(
-  games: database.Game[],
-  filter?: string,
-  categories?: database.Category[],
-): database.Game[] {
-  const filterByName = validNameFilter(filter);
-  const filterByCategory = validDatabaseCategories(categories);
-
-  if (!filterByName && !filterByCategory) {
-    return games;
-  }
-
-  console.log("Im filtering");
-  const gamesFiltered = games.filter((game) => {
-    if (filterByName && !filterByCategory) {
-      console.log("first", filter);
-      return hasFilteredGameName(game.title, filter as string);
-    } else if (!filterByName && filterByCategory) {
-      console.log("second", categories);
-      return hasFilteredCategories(categories as database.Category[], game);
-    } else if (filterByName && filterByCategory) {
-      console.log("all", filter, categories);
-      return (
-        hasFilteredGameName(game.title, filter as string) &&
-        hasFilteredCategories(categories as database.Category[], game)
-      );
-    } else {
-      console.log("ultimate");
-      return true;
-    }
-  });
-
-  return gamesFiltered;
 }

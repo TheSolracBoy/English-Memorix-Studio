@@ -6,6 +6,7 @@ import {
   GetGameInfo,
   LoadAllCategories,
   EditGame,
+  AskUserForConfirmation,
 } from "../../../../../wailsjs/go/app/App";
 
 import { useNavigate } from "react-router-dom";
@@ -187,16 +188,14 @@ export const useEditGame = (props: Props) => {
 
   async function handleEditGame() {
     if (showAddNewPair === true) {
-      console.log("You are creating a new pair");
-      const userWantsToDitchNewPair = confirm(
-        "You are creating a new pair, do you want ditch the new pair and save the changes?",
-      );
+      const userWantsToDitchNewPair = await AskUserForConfirmation("Ditch pair", "You are creating a new pair, do you want ditch the new pair and save the changes?")
+      console.log("decision", userWantsToDitchNewPair)
       if (userWantsToDitchNewPair === false) {
         return;
       }
     }
 
-    const editGame = confirm("Are you sure you want to edit this game?");
+    const editGame = await AskUserForConfirmation("Confirm", "Are you sure you want to edit this game?")
     if (editGame === false) {
       console.log("You are creating a new pair");
       return;
@@ -243,23 +242,22 @@ export const useEditGame = (props: Props) => {
     navigator("../");
   }
 
-  function handleCancelButton() {
-    const userConfirmCancelEdit = confirm("Are you sure you want to cancel?");
+  async function handleCancelButton() {
+    const userConfirmCancelEdit = await AskUserForConfirmation("Cancel", "Are you sure you want to cancel?")
     if (!userConfirmCancelEdit) {
       return;
     }
     navigator("../");
   }
 
-  function handleCancelAddNewPair() {
+  async function handleCancelAddNewPair() {
     console.log(tempPair);
     if (
       tempPair.tempImageCard.image !== null ||
       tempPair.wordCard.word !== ""
     ) {
-      const userWantsToCancel = confirm(
-        "Creating new pair in progress, do you want to cancel?",
-      );
+      const userWantsToCancel = await AskUserForConfirmation("Cancel", "Creating new pair in progress, do you want to cancel?")
+
       if (!userWantsToCancel) {
         return;
       }
