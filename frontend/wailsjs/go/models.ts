@@ -50,9 +50,27 @@ export namespace app {
 		    return a;
 		}
 	}
+	export class PairWithBase64Image {
+	    id: string;
+	    word: string;
+	    image_format: string;
+	    base64_image: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new PairWithBase64Image(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.id = source["id"];
+	        this.word = source["word"];
+	        this.image_format = source["image_format"];
+	        this.base64_image = source["base64_image"];
+	    }
+	}
 	export class GetPlayGameInfoReponse {
 	    game_title: string;
-	    pairs: database.Pair[];
+	    pairs: PairWithBase64Image[];
 	
 	    static createFrom(source: any = {}) {
 	        return new GetPlayGameInfoReponse(source);
@@ -61,7 +79,7 @@ export namespace app {
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.game_title = source["game_title"];
-	        this.pairs = this.convertValues(source["pairs"], database.Pair);
+	        this.pairs = this.convertValues(source["pairs"], PairWithBase64Image);
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -98,6 +116,7 @@ export namespace app {
 	        this.imageFormat = source["imageFormat"];
 	    }
 	}
+	
 
 }
 

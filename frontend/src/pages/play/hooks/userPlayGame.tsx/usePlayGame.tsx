@@ -1,24 +1,25 @@
 import { useEffect, useState } from "react"
-import { app, database } from "../../../../../wailsjs/go/models"
-import { GetPlayGameInfo } from "../../../../../wailsjs/go/app/App"
 import useTimer from "../useTimer"
 import { getUserPlayGameData } from "./getUsePlayGameData"
-
+import { GameCard } from "@/models"
 
 export const usePlayGame = (id: number) => {
-	const [pairs, setPairs] = useState<database.Pair[]>([])
+	const [gameCards, setGameCards] = useState<GameCard[]>([])
 	const [title, setTitle] = useState("")
 	const { seconds, handleStartTimer, handleStopTimer, handleRestartTimer } = useTimer()
 
 	useEffect(() => {
-
-		getUserPlayGameData(id, setTitle, setPairs)
+		const loadData = async () => {
+			await getUserPlayGameData(id, setTitle, setGameCards)
+			console.log("helo", gameCards)
+		}
+		loadData()
 		return () => {
 		}
 	}, [])
 
 
 
-	return { pairs, title, seconds, handleStartTimer, handleStopTimer, handleRestartTimer }
+	return { title, seconds, handleStartTimer, handleStopTimer, handleRestartTimer, gameCards }
 }
 

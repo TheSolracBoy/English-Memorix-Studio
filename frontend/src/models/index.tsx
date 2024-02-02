@@ -9,6 +9,17 @@ export interface Image {
 }
 // Pair management
 
+export interface GameCard {
+  pairID: string
+}
+export interface ImageGameCardPlay extends GameCard {
+  image: Image
+}
+export interface WordGameCardPlay extends GameCard {
+  word: string
+}
+
+
 export type WordCard = {
   word: string;
 };

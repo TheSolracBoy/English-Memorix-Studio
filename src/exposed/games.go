@@ -3,6 +3,7 @@ package app
 import (
 	"encoding/base64"
 	"fmt"
+	"strconv"
 
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 	"gorm.io/gorm"
@@ -222,9 +223,16 @@ func (a *App) GetCategoriesFromGame(id uint) ([]database.Category, error) {
 	return categories, nil
 }
 
+type PairWithBase64Image struct {
+	Id          string `json:"id"`
+	Word        string `json:"word"`
+	ImageFormat string `json:"image_format"`
+	Base64Image string `json:"base64_image"`
+}
+
 type GetPlayGameInfoReponse struct {
-	GameTitle string          `json:"game_title"`
-	Pairs     []database.Pair `json:"pairs"`
+	GameTitle string                `json:"game_title"`
+	Pairs     []PairWithBase64Image `json:"pairs"`
 }
 
 func (a *App) GetPlayGameInfo(id int32) (GetPlayGameInfoReponse, error) {
@@ -239,16 +247,28 @@ func (a *App) GetPlayGameInfo(id int32) (GetPlayGameInfoReponse, error) {
 		return GetPlayGameInfoReponse{}, fmt.Errorf("didn't find game: %v", err)
 	}
 
-	response := GetPlayGameInfoReponse{}
-	response.GameTitle = game.Title
+	response := GetPlayGameInfoReponse{
+		Pairs:     []PairWithBase64Image{},
+		GameTitle: game.Title,
+	}
 
-	var pairs []database.Pair
-	err = db.Where("game_id = ?", id).Find(&pairs).Error
+	var databasePairs []database.Pair
+	err = db.Where("game_id = ?", id).Find(&databasePairs).Error
 	if err != nil {
 		return GetPlayGameInfoReponse{}, fmt.Errorf("couldn't find pairs: %v", err)
 	}
+	for _, pair := range databasePairs {
+		bytes := pair.Bytes
+		base64image := base64.StdEncoding.EncodeToString(bytes)
+		response.Pairs = append(response.Pairs, PairWithBase64Image{
+			Id:          strconv.FormatUint(uint64(pair.GameID), 10),
+			Word:        pair.Word,
+			ImageFormat: pair.ImageFormat,
+			Base64Image: base64image,
+		})
 
-	response.Pairs = pairs
+	}
+
 	return response, nil
 
 }
