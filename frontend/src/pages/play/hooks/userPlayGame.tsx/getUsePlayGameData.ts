@@ -19,11 +19,13 @@ function generateImageFromBase64(imageFormat: string, base64Image: string): Imag
 function transformPairToGameCards(pair: app.PairWithBase64Image): PairOfGameCards {
 
 	const wordCard: WordGameCardPlay = {
+		isHidden: true,
 		pairID: pair.id,
 		word: pair.word
 	}
 
 	const imageCard: ImageGameCardPlay = {
+		isHidden: true,
 		pairID: pair.id,
 		image: generateImageFromBase64(pair.image_format, pair.base64_image)
 	}

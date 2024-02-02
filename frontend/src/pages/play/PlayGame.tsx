@@ -1,35 +1,14 @@
 import { Link, useParams } from "react-router-dom";
 import { usePlayGame } from "./hooks/userPlayGame.tsx/usePlayGame";
 import { LogoSplash } from "@/Components/LogoSplash";
-import { GameLayout } from "@/layouts/GameLayout";
 import Timer from "./smallComponents/Timer";
 import { Button } from "@nextui-org/react";
-import { Image, ImageGameCardPlay, WordGameCardPlay } from "@/models";
-
-
-function ImageGameCard(props: ImageGameCardPlay) {
-	return (
-		<><h1>{"Im an image game card"}</h1></>
-	)
-}
-
-interface WordGameCardProps {
-	card: WordGameCardPlay
-
-}
-function WordGameCard(props: WordGameCardProps) {
-
-	return (
-		<><h1>{"Im a word game card"}</h1></>
-	)
-}
+import GameCardLayout from "./smallComponents/GameCard";
 
 export const PlayGame = () => {
 	const params = useParams();
 	const id = Number(params.id);
 	const logic = usePlayGame(id)
-
-
 	return (
 		<div className="flex min-h-screen flex-col p-2 bg-secondary">
 			<div className="flex justify-between">
@@ -54,27 +33,11 @@ export const PlayGame = () => {
 				{
 					logic.gameCards.map(
 						(card) => {
-							if ("word" in card) {
-								return (
-									<>
-										<WordGameCard card={card as WordGameCardPlay}></WordGameCard>
-										<h1>Hello</h1>
-									</>
-								)
-							}
-							return (
-								<>
-									<WordGameCard card={card as WordGameCardPlay}></WordGameCard>
-									<h1>Hello</h1>
-									<h2>aimage </h2>
-								</>
-							)
+							return <GameCardLayout card={card} />
 
 						}
 					)
-
 				}
-
 			</div>
 
 		</div>

@@ -11,6 +11,7 @@ export interface Image {
 
 export interface GameCard {
   pairID: string
+  isHidden: boolean
 }
 export interface ImageGameCardPlay extends GameCard {
   image: Image
