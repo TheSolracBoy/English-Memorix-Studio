@@ -4,7 +4,8 @@ import imgUrl from '@/assets/images/backImage.png'
 interface GameCardProps {
 	card: GameCard
 }
-export default function GameCardLayout({ card }: GameCardProps) {
+export default function GameCardUI({ card }: GameCardProps) {
+
 	function isWordCard(): boolean {
 		if ("word" in card) {
 			return true
@@ -15,7 +16,9 @@ export default function GameCardLayout({ card }: GameCardProps) {
 		<>
 
 			{card.isHidden &&
-				<div className="h-52 w-32   rounded-md bg-cover hover:cursor-pointer " style={
+				<div className={"h-52 w-32 rounded-md bg-cover  transition-all filter " +
+					(card.haveBeenGuessed ? "grayscale" : "hover:cursor-pointer")
+				} style={
 					{
 						backgroundImage: `url(${imgUrl})`
 					}
@@ -25,7 +28,7 @@ export default function GameCardLayout({ card }: GameCardProps) {
 
 			{!card.isHidden &&
 				(
-					<div className="h-52 w-32 flex justify-center items-center border rounded-md p-2 bg-white" >
+					<div className=" h-52 w-32 flex justify-center items-center border rounded-md p-2 bg-white transition-all hover:cursor-pointer" >
 
 						{!card.isHidden && (isWordCard() ?
 							((card) as WordGameCardPlay).word

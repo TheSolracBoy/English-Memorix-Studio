@@ -261,7 +261,7 @@ func (a *App) GetPlayGameInfo(id int32) (GetPlayGameInfoReponse, error) {
 		bytes := pair.Bytes
 		base64image := base64.StdEncoding.EncodeToString(bytes)
 		response.Pairs = append(response.Pairs, PairWithBase64Image{
-			Id:          strconv.FormatUint(uint64(pair.GameID), 10),
+			Id:          strconv.FormatUint(uint64(pair.ID), 10),
 			Word:        pair.Word,
 			ImageFormat: pair.ImageFormat,
 			Base64Image: base64image,

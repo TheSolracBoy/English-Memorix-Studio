@@ -3,7 +3,7 @@ import { usePlayGame } from "./hooks/userPlayGame.tsx/usePlayGame";
 import { LogoSplash } from "@/Components/LogoSplash";
 import Timer from "./smallComponents/Timer";
 import { Button } from "@nextui-org/react";
-import GameCardLayout from "./smallComponents/GameCard";
+import GameCardUI from "./smallComponents/GameCard";
 
 export const PlayGame = () => {
 	const params = useParams();
@@ -28,17 +28,28 @@ export const PlayGame = () => {
 				<Button size="sm" onClick={() => logic.handleStartTimer()}>Play</Button>
 				<Button size="sm" onClick={() => logic.handleRestartTimer()}>Start Over</Button>
 			</div>
+			{logic.hasWonGame &&
+				<h1>Has won game</h1>
+			}
 
-			<div className="flex flex-wrap gap-2">
-				{
-					logic.gameCards.map(
-						(card) => {
-							return <GameCardLayout card={card} />
+			{
+				!logic.hasWonGame &&
+				<div className="flex flex-wrap gap-4">
+					{
+						logic.gameCards.map(
+							(card, i) => {
+								return (<div key={i} onClick={() => { logic.handleClickOnCard(i) }}>
+									<GameCardUI card={card} />
+								</div>
+								)
 
-						}
-					)
-				}
-			</div>
+							}
+						)
+					}
+				</div>
+
+			}
+
 
 		</div>
 

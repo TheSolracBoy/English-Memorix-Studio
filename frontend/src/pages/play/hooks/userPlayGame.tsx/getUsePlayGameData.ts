@@ -19,14 +19,15 @@ function generateImageFromBase64(imageFormat: string, base64Image: string): Imag
 function transformPairToGameCards(pair: app.PairWithBase64Image): PairOfGameCards {
 
 	const wordCard: WordGameCardPlay = {
+		haveBeenGuessed: false,
 		isHidden: true,
 		pairID: pair.id,
 		word: pair.word
 	}
 
 	const imageCard: ImageGameCardPlay = {
-		isHidden: true,
-		pairID: pair.id,
+		haveBeenGuessed: false,
+		isHidden: true, pairID: pair.id,
 		image: generateImageFromBase64(pair.image_format, pair.base64_image)
 	}
 
@@ -40,7 +41,8 @@ function transformPairToGameCards(pair: app.PairWithBase64Image): PairOfGameCard
 export const getUserPlayGameData = async (
 	id: number,
 	setTitle: (a: string) => void,
-	setGameCards: (a: GameCard[]) => void
+	setGameCards: (a: GameCard[]) => void,
+	pairIDSRef: React.MutableRefObject<string[]>
 ) => {
 	try {
 		const response = await GetPlayGameInfo(id)
@@ -50,6 +52,7 @@ export const getUserPlayGameData = async (
 
 		response.pairs.forEach(
 			(pair) => {
+				pairIDSRef.current.push(pair.id)
 				const gameCardPair = transformPairToGameCards(pair)
 				gameCards.push(gameCardPair.imageCard)
 				gameCards.push(gameCardPair.wordCard)
@@ -59,6 +62,7 @@ export const getUserPlayGameData = async (
 		gameCards = shuffleArray(gameCards)
 		console.log("inside getUse", gameCards)
 		setGameCards(gameCards)
+		console.log(gameCards)
 
 	}
 	catch (error) {
