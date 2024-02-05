@@ -105,9 +105,10 @@ type PairsWithBase64Image struct {
 }
 
 type GameInfo struct {
-	Id    uint                   `json:"id"`
-	Title string                 `json:"title"`
-	Pairs []PairsWithBase64Image `json:"pairs"`
+	Id          uint                   `json:"id"`
+	Title       string                 `json:"title"`
+	Description string                 `json:"description"`
+	Pairs       []PairsWithBase64Image `json:"pairs"`
 }
 
 func (a *App) GetGameInfo(id uint) (GameInfo, error) {
@@ -125,9 +126,10 @@ func (a *App) GetGameInfo(id uint) (GameInfo, error) {
 	}
 
 	response := GameInfo{
-		Id:    game.ID,
-		Title: game.Title,
-		Pairs: []PairsWithBase64Image{},
+		Description: game.Description,
+		Id:          game.ID,
+		Title:       game.Title,
+		Pairs:       []PairsWithBase64Image{},
 	}
 
 	for _, pair := range game.Pairs {
