@@ -151,7 +151,7 @@ export const useEditGame = (props: Props) => {
       const gameInfo = await GetGameInfo(gameID);
 
       setGameTitle(gameInfo.title);
-      // setNewGameDescription(gameInfo.description);
+      setNewGameDescription(gameInfo.description);
       let newPairs: TempPair[] = [];
 
       gameInfo.pairs.forEach((pair) => {

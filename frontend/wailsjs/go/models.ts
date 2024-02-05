@@ -19,6 +19,7 @@ export namespace app {
 	export class GameInfo {
 	    id: number;
 	    title: string;
+	    description: string;
 	    pairs: PairsWithBase64Image[];
 	
 	    static createFrom(source: any = {}) {
@@ -29,6 +30,7 @@ export namespace app {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.id = source["id"];
 	        this.title = source["title"];
+	        this.description = source["description"];
 	        this.pairs = this.convertValues(source["pairs"], PairsWithBase64Image);
 	    }
 	
