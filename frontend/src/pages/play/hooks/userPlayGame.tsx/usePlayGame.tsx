@@ -2,9 +2,8 @@ import { useEffect, useRef, useState } from "react"
 import useTimer from "../useTimer"
 import { getUserPlayGameData } from "./getUsePlayGameData"
 import { GameCard } from "@/models"
-import { sleep } from "@/utils"
+import { shuffleArray, sleep } from "@/utils"
 // TODO: Extract the game logic to ./gameLogic.ts file
-
 
 interface GameState {
 	havePlayedFirstCard: boolean
@@ -22,15 +21,18 @@ export const usePlayGame = (id: number) => {
 	const [gameCards, setGameCards] = useState<GameCard[]>([])
 	const [title, setTitle] = useState("")
 	const [hasWonGame, setHasWonGame] = useState(false)
+	const [hasStartGame, setHasStartGame] = useState(false)
 	const { seconds, handleStartTimer, handleStopTimer, handleRestartTimer } = useTimer()
 	const pairArray = useRef<string[]>([])
 
 	useEffect(() => {
 		const loadData = async () => {
 			await getUserPlayGameData(id, setTitle, setGameCards, pairArray)
+
+			setHasStartGame(true)
+			handleStartTimer()
 		}
 		loadData()
-		console.log(pairArray)
 		return () => {
 		}
 	}, [])
@@ -99,15 +101,14 @@ export const usePlayGame = (id: number) => {
 
 		const cardRedf = gameCards[firstCardIndex]
 
-		console.log(pairArray)
 
 		pairArray.current = pairArray.current.filter(
 			(id) => {
 				return id !== cardRedf.pairID
 			}
 		)
-		console.log(pairArray)
 		if (pairArray.current.length === 0) {
+			handleStopTimer()
 			setHasWonGame(true)
 		}
 
@@ -115,7 +116,6 @@ export const usePlayGame = (id: number) => {
 	}
 
 	function manageNotFoundPair(firstCardIndex: number, secondCardIndex: number) {
-		console.log("manage not found pair")
 		setGameCards(
 			gameCards.map((gameCard, i) => {
 				if (firstCardIndex === i || secondCardIndex === i) {
@@ -158,6 +158,37 @@ export const usePlayGame = (id: number) => {
 	}
 
 
+	function handleRestartGame() {
+		setHasStartGame(true)
+		handleRestartTimer()
 
-	return { title, seconds, handleStartTimer, handleStopTimer, handleRestartTimer, gameCards, handleClickOnCard, hasWonGame }
+		const newGameCards = gameCards.map(
+			(oldCard) => {
+				oldCard.haveBeenGuessed = false
+				return oldCard
+			}
+		)
+
+		const newGameCardsShuffle = shuffleArray(newGameCards)
+		const idArray: string[] = []
+
+		newGameCardsShuffle.forEach(
+			(card) => {
+				if (!idArray.includes(card.pairID)) {
+					idArray.push(card.pairID)
+				}
+			}
+		)
+
+
+
+		pairArray.current = idArray
+		setGameCards(newGameCardsShuffle)
+		setHasWonGame(false)
+
+	}
+
+
+
+	return { title, seconds, hasStartGame, gameCards, handleClickOnCard, hasWonGame, handleRestartGame }
 }

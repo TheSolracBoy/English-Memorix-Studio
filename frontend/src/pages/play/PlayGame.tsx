@@ -2,8 +2,8 @@ import { Link, useParams } from "react-router-dom";
 import { usePlayGame } from "./hooks/userPlayGame.tsx/usePlayGame";
 import { LogoSplash } from "@/Components/LogoSplash";
 import Timer from "./smallComponents/Timer";
-import { Button } from "@nextui-org/react";
 import GameCardUI from "./smallComponents/GameCard";
+import { Button } from "@nextui-org/react";
 
 export const PlayGame = () => {
 	const params = useParams();
@@ -21,20 +21,23 @@ export const PlayGame = () => {
 			</div>
 
 
-			<div className=" items-center">
+			<div className="flex flex-col items-center">
 				<h1 className="text-center self-center text-3xl font-bold">{logic.title}</h1>
-				<div className="">
-				</div>
-				<Button size="sm" onClick={() => logic.handleStartTimer()}>Play</Button>
-				<Button size="sm" onClick={() => logic.handleRestartTimer()}>Start Over</Button>
 			</div>
+
 			{logic.hasWonGame &&
-				<h1>Has won game</h1>
+				<div className="flex flex-col  self-center items-center justify-center flex-1">
+					<h1 className="font-bold text-4xl">You won!! </h1>
+					<Button onClick={() => logic.handleRestartGame()} className="w-44 bg-cyan-800 hover:bg-cyan-500 text-white transition-all" >Play again</Button>
+					<Link to={"../"}>
+						<Button className="w-44 mt-1 bg-cyan-800 hover:bg-cyan-500 text-white transition-all">Back to games</Button>
+					</Link>
+				</div>
 			}
 
 			{
-				!logic.hasWonGame &&
-				<div className="flex flex-wrap gap-4">
+				logic.hasStartGame && !logic.hasWonGame &&
+				<div className="flex flex-wrap gap-4 items-center justify-center mt-2">
 					{
 						logic.gameCards.map(
 							(card, i) => {
@@ -42,7 +45,6 @@ export const PlayGame = () => {
 									<GameCardUI card={card} />
 								</div>
 								)
-
 							}
 						)
 					}
@@ -51,7 +53,7 @@ export const PlayGame = () => {
 			}
 
 
-		</div>
+		</div >
 
 	)
 }

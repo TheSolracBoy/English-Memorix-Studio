@@ -17,7 +17,7 @@ export default function GameCardUI({ card }: GameCardProps) {
 
 			{card.isHidden &&
 				<div className={"h-52 w-32 rounded-md bg-cover  transition-all filter " +
-					(card.haveBeenGuessed ? "grayscale" : "hover:cursor-pointer")
+					(card.haveBeenGuessed ? "opacity-0" : "hover:cursor-pointer")
 				} style={
 					{
 						backgroundImage: `url(${imgUrl})`
