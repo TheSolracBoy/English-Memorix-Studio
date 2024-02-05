@@ -42,8 +42,7 @@ export const EditGame = () => {
   return (
     <AdminLayout title="Games">
       <h1 className="text-2xl font-semibold">Edit Game</h1>
-
-      <form className="mt-2 flex flex-col " onSubmit={handleEditGame}>
+      <div className="mt-2 flex flex-col " >
         <GameInfoEdit
           gameTitle={gameTitle}
           setGameTitle={setGameTitle}
@@ -97,16 +96,15 @@ export const EditGame = () => {
             Add new Pair
           </Button>
         )}
-        <div></div>
         <div className=" mt-5 flex  justify-end gap-2  ">
           <Button onClick={handleCancelButton} color="danger">
             Cancel
           </Button>
-          <Button type="submit" color="primary">
+          <Button type="submit" color="primary" onClick={handleEditGame}>
             Edit Game
           </Button>
         </div>
-      </form>
+      </div>
     </AdminLayout>
   );
 };
