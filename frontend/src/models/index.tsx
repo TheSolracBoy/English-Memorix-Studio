@@ -9,6 +9,19 @@ export interface Image {
 }
 // Pair management
 
+export interface GameCard {
+  pairID: string
+  isHidden: boolean
+  haveBeenGuessed: boolean
+}
+export interface ImageGameCardPlay extends GameCard {
+  image: Image
+}
+export interface WordGameCardPlay extends GameCard {
+  word: string
+}
+
+
 export type WordCard = {
   word: string;
 };

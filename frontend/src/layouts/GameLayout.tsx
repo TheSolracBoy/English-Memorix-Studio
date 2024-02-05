@@ -9,7 +9,7 @@ type Props = {
 
 export const GameLayout: FC<Props> = (props) => {
   return (
-    <div className=" flex min-h-screen flex-1  flex-col bg-gray-100  ">
+    <div className=" flex min-h-screen flex-1  flex-col   ">
       <div className=" mx-2 flex flex-1 flex-col rounded-md bg-white px-2 py-2">
         {props.children}
       </div>
