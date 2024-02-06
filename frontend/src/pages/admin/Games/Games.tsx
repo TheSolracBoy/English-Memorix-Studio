@@ -9,7 +9,7 @@ import {
 } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { EraseGame, LoadGames } from "../../../../wailsjs/go/app/App";
+import { AskUserForConfirmation, EraseGame, LoadGames } from "../../../../wailsjs/go/app/App";
 import { AdminLayout } from "../../../layouts/AdminLayout";
 import { cleanLongTexts, renderCategories } from "../../../utils";
 import { database } from "../../../../wailsjs/go/models";
@@ -30,10 +30,14 @@ export const Games = () => {
     setGames(response);
   }
 
-  async function handleEraseGame(id: number) {
+  async function handleEraseGame(id: number, name: string) {
     try {
-      await EraseGame(id);
-      loadGames();
+      const userWantsToEraseTheGame = await AskUserForConfirmation("Erase Game",
+        "Do you want to erase the game: " + name + " and loose all it's content?")
+      if (userWantsToEraseTheGame) {
+        await EraseGame(id);
+        loadGames();
+      }
     } catch (error) {
       console.log(error);
     }
@@ -91,7 +95,7 @@ export const Games = () => {
               </TableCell>
               <TableCell>
                 <Button
-                  onClick={() => handleEraseGame(game.id)}
+                  onClick={() => handleEraseGame(game.id, game.title)}
                   size="sm"
                   color="danger"
                 >
