@@ -70,32 +70,38 @@ func (a *App) EraseGame(id uint) error {
 		return err
 	}
 
-	var game database.Game
-	db.First(&game, id)
-	if game.ID == 0 {
-		runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
-			Type:    runtime.InfoDialog,
-			Title:   "Database Error",
-			Message: "Game doesn't exist",
-		})
-		return fmt.Errorf("game doesn't exist")
-	}
+	var globalError error
 
-	db.Model(&game).Association("Categories").Clear()
-	db.Unscoped().Delete(&game)
+	db.Transaction(func(tx *gorm.DB) error {
+		var game database.Game
+		tx.First(&game, id)
+		if game.ID == 0 {
+			runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
+				Type:    runtime.InfoDialog,
+				Title:   "Database Error",
+				Message: "Game doesn't exist",
+			})
+			globalError = fmt.Errorf("game doesn't exist")
+			return globalError
+		}
 
-	if db.Error != nil {
+		tx.Model(&game).Association("Categories").Clear()
+		tx.Where("game_id = ?", game.ID).Delete(&database.Pair{})
+		tx.Unscoped().Delete(&game)
 
-		runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
-			Type:    runtime.InfoDialog,
-			Title:   "Database Error",
-			Message: "Error deleting game",
-		})
-		db.Commit()
-		return fmt.Errorf("ERROR_DELETING")
-	}
+		if tx.Error != nil {
+			runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
+				Type:    runtime.InfoDialog,
+				Title:   "Database Error",
+				Message: "Error deleting game",
+			})
+			globalError = fmt.Errorf("error_deleting")
+			return globalError
+		}
+		return nil
+	})
 
-	return nil
+	return globalError
 }
 
 type PairsWithBase64Image struct {
