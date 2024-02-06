@@ -169,29 +169,35 @@ func (a *App) EditGame(
 		CantConnectToDatabaseMessage(a)
 	}
 	var game database.Game
+	var globalError error = nil
 	db.Transaction(func(tx *gorm.DB) error {
 
-		db.First(&game, id)
+		tx.First(&game, id)
 		if game.ID == 0 {
+			globalError = err
 			return err
 		}
 
 		game.Title = title
 		game.Description = description
-		if err := db.Save(&game).Error; err != nil {
+		if err := tx.Save(&game).Error; err != nil {
+			globalError = err
 			return err
 		}
 
 		var categoriesFromDatabase []database.Category
 
-		if err := db.Where("id IN (?)", categoriesIDS).Find(&categoriesFromDatabase).Error; err != nil {
+		if err := tx.Where("id IN (?)", categoriesIDS).Find(&categoriesFromDatabase).Error; err != nil {
+			globalError = err
 			return err
 		}
-		if err := db.Model(&game).Association("Categories").Replace(categoriesFromDatabase); err != nil {
+		if err := tx.Model(&game).Association("Categories").Replace(categoriesFromDatabase); err != nil {
+			globalError = err
 			return err
 		}
 
 		if err := tx.Delete(&database.Pair{}, "game_id = ?", id).Error; err != nil {
+			globalError = err
 			return err
 		}
 
@@ -204,13 +210,16 @@ func (a *App) EditGame(
 			newPair.Bytes = pair.Bytes
 			newPair.ImageFormat = pair.ImageFormat
 			if err := tx.Create(&newPair).Error; err != nil {
+				globalError = err
 				return err
 			}
 
 		}
 		return nil
 	})
-
+	if globalError != nil {
+		return database.Game{}, globalError
+	}
 	return game, nil
 }
 
