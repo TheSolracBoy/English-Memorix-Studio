@@ -34,10 +34,10 @@ export const EditCategory = () => {
 
     try {
 
-      const result = await EC(Number(params.id), newCategory);
-    } catch (error) {
-
+      await EC(Number(params.id), newCategory);
       navigate("../");
+    } catch (error) {
+      console.log(error)
     }
   };
 
