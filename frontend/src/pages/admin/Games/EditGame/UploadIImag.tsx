@@ -1,6 +1,6 @@
 import { Coordinates, Cropper } from "react-advanced-cropper";
 import "react-advanced-cropper/dist/style.css";
-import React, { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import { CropperRef } from "react-advanced-cropper";
 import { Button, Input } from "@nextui-org/react";
 
@@ -46,14 +46,7 @@ export default function UploadImage(props: Props) {
     event.target.value = "";
   };
 
-  useEffect(() => {
-    // Revoke the object URL, to allow the garbage collector to destroy the uploaded before file
-    return () => {
-      if (tempImage && tempImage.src) {
-        URL.revokeObjectURL(tempImage.src);
-      }
-    };
-  }, [tempImage]);
+
 
   return (
     <div className="upload-example">
@@ -79,7 +72,7 @@ export default function UploadImage(props: Props) {
             props.handleSetImage(null);
           }}
         >
-          Reset
+          Change image
         </Button>
 
         <Button

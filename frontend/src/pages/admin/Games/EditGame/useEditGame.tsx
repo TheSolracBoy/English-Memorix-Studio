@@ -7,6 +7,7 @@ import {
   LoadAllCategories,
   EditGame,
   AskUserForConfirmation,
+  Alert,
 } from "../../../../../wailsjs/go/app/App";
 
 import { useNavigate } from "react-router-dom";
@@ -41,11 +42,47 @@ export const useEditGame = (props: Props) => {
   const [tempPair, setTempPair] = useState<TempPair>(emptyTempPair);
   const [pairs, setPairs] = useState<TempPair[]>([]);
 
+  const [editingSavedPairID, setEditingSavedPairID] = useState<number | null>(null)
+
+
+
   const [showAddNewPair, setShowAddNewPair] = useState(false);
   function handlerAddNewPair() {
     if (showAddNewPair === false) {
       setShowAddNewPair(true);
     }
+  }
+
+  function handleSaveEditingOldPair(newPair: TempPair) {
+    if (editingSavedPairID === null) {
+      return
+    }
+
+    setPairs(
+      pairs.map(
+        (pair, index) => {
+          if (index == editingSavedPairID) {
+            return newPair
+
+          }
+          return pair
+        }
+      )
+    )
+
+    setEditingSavedPairID(null)
+  }
+
+  function handleCancelEditingSavedPair() {
+    setEditingSavedPairID(null)
+  }
+
+  async function handleEditSavedPair(index: number) {
+    if (editingSavedPairID == null) {
+      setEditingSavedPairID(index)
+      return
+    }
+    await Alert("Can't edit two pairs", "You have another pair being edited, pls finish editing that pair before continue")
   }
 
   function handleChangeWordTempPair(newWord: string) {
@@ -281,9 +318,24 @@ export const useEditGame = (props: Props) => {
     }
   }
 
+  async function eliminateFromSavedCards(index: number) {
+    if (editingSavedPairID !== null) {
+      await Alert("Can't delete pair", "You have another pair being edited, pls finish editing that pair before continue")
+      return
+    }
+    setPairs(
+      pairs.filter((pair, i) => {
+        if (i !== index) {
+          return pair
+        }
+      })
+    )
+  }
+
   const [files, setFiles] = useState<any>([]);
 
   return {
+    eliminateFromSavedCards,
     categories,
     setCategories,
     gameTitle,
@@ -307,5 +359,9 @@ export const useEditGame = (props: Props) => {
     handleChangeImage,
     pairs,
     handleRemovePair,
+    handleEditSavedPair,
+    editingSavedPairID,
+    handleCancelEditingSavedPair,
+    handleSaveEditingOldPair
   };
 };

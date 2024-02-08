@@ -35,3 +35,19 @@ func (app *App) AskUserForConfirmation(textPrompt string, title string) bool {
 	return false
 
 }
+
+func (app *App) Alert(textPrompt string, title string) error {
+
+	options := runtime.MessageDialogOptions{
+		Type:    runtime.InfoDialog,
+		Title:   title,
+		Message: textPrompt,
+	}
+	_, err := runtime.MessageDialog(app.ctx, options)
+
+	if err != nil {
+		return err
+
+	}
+	return err
+}
