@@ -9,14 +9,14 @@ export const SelectDatabase = () => {
   async function handleClickSetDatabae() {
     const result = await SetDatabase();
     if (result == "OK") {
-      navigate("/selectImageFolder");
+      navigate("/selectMode");
     }
   }
 
   async function handleClickCreateDatabase() {
     const result = await CreateDatabase();
     if (result == "OK") {
-      navigate("/selectImageFolder");
+      navigate("/selectMode");
     }
   }
 

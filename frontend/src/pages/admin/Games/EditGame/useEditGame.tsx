@@ -43,6 +43,8 @@ export const useEditGame = (props: Props) => {
   const [pairs, setPairs] = useState<TempPair[]>([]);
 
   const [editingSavedPairID, setEditingSavedPairID] = useState<number | null>(null)
+  const [isLoadingSaveEdit, setIsLoadingSaveEdit] = useState(false)
+  const [isLoadingPairs, setIsLoadingPairs] = useState(false)
 
 
 
@@ -185,11 +187,13 @@ export const useEditGame = (props: Props) => {
 
   async function getGameInformation() {
     try {
+      setIsLoadingPairs(true)
       const gameInfo = await GetGameInfo(gameID);
 
       setGameTitle(gameInfo.title);
       setNewGameDescription(gameInfo.description);
       let newPairs: TempPair[] = [];
+
 
       gameInfo.pairs.forEach((pair) => {
         const base = pair.base64Image;
@@ -215,6 +219,7 @@ export const useEditGame = (props: Props) => {
       });
 
       setPairs(newPairs);
+      setIsLoadingPairs(false)
     } catch (error) {
       console.log(error);
     }
@@ -232,6 +237,7 @@ export const useEditGame = (props: Props) => {
     if (editGame === false) {
       return;
     }
+    setIsLoadingSaveEdit(true)
 
     let inputPairs: app.InputPair[] = [];
     let counter = 0;
@@ -254,6 +260,7 @@ export const useEditGame = (props: Props) => {
         word: pair.wordCard.word,
       });
     }
+    console.log("End")
 
     try {
       await EditGame(
@@ -264,9 +271,11 @@ export const useEditGame = (props: Props) => {
         inputPairs,
       );
     } catch (error) {
+      setIsLoadingSaveEdit(false)
       alert("Error editing game: " + error);
       return;
     }
+    setIsLoadingSaveEdit(false)
     alert("Game edited successfully");
     navigator("../");
   }
@@ -362,6 +371,8 @@ export const useEditGame = (props: Props) => {
     handleEditSavedPair,
     editingSavedPairID,
     handleCancelEditingSavedPair,
-    handleSaveEditingOldPair
+    handleSaveEditingOldPair,
+    isLoadingSaveEdit,
+    isLoadingPairs
   };
 };

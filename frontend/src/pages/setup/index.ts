@@ -1,5 +1,5 @@
-import {SelectDatabase} from "./SelectDatabase";
-import {SelectImageFolder} from "./SelectImageFolder";
-import {SelectMode} from "./SelectMode";
+import { SelectDatabase } from "./SelectDatabase";
+// import {SelectImageFolder} from "./SelectImageFolder";
+import { SelectMode } from "./SelectMode";
 
-export {SelectDatabase, SelectImageFolder, SelectMode}
+export { SelectDatabase, SelectMode }
