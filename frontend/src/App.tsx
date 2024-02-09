@@ -1,7 +1,7 @@
 import "./App.css";
 
 import { HashRouter, Route, Routes } from "react-router-dom";
-import { SelectDatabase, SelectImageFolder, SelectMode } from "./pages/setup";
+import { SelectDatabase, SelectMode } from "./pages/setup";
 import { Categories, EditCategory } from "./pages/admin/Categories";
 import { EditGame, Games, NewGame } from "./pages/admin/Games";
 import { Home } from "./pages/setup/Home";
@@ -15,7 +15,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/selectDatabase" element={<SelectDatabase />} />
-        <Route path="/selectImageFolder" element={<SelectImageFolder />} />
+        {/* <Route path="/selectImageFolder" element={<SelectImageFolder />} /> */}
         <Route path="/selectMode" element={<SelectMode />} />
 
         <Route path="/admin">
