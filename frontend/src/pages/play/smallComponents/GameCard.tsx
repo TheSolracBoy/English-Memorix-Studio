@@ -1,46 +1,44 @@
-import { GameCard, ImageGameCardPlay, WordGameCardPlay } from "@/models"
-import imgUrl from '@/assets/images/backImage.png'
+import { GameCard, ImageGameCardPlay, WordGameCardPlay } from "@/models";
+import imgUrl from "@/assets/images/backImage.png";
 
 interface GameCardProps {
-	card: GameCard
+  card: GameCard;
 }
 export default function GameCardUI({ card }: GameCardProps) {
+  function isWordCard(): boolean {
+    if ("word" in card) {
+      return true;
+    }
+    return false;
+  }
+  return (
+    <div className="relative">
+      <div
+        id={card.pairID + "_back_image" + (isWordCard() ? "_word" : "_image")}
+        className="absolute h-52 w-32 rounded-md bg-cover  filter transition-all hover:cursor-pointer"
+        style={{
+          backgroundImage: `url(${imgUrl})`,
+        }}
+      ></div>
 
-	function isWordCard(): boolean {
-		if ("word" in card) {
-			return true
-		}
-		return false
-	}
-	return (
-		<>
+      {isWordCard() ?
+        <div
+          id={card.pairID + "_word_card"}
+          className=" h-52 w-32 items-center justify-center rounded-md border bg-white p-2 transition-all  flex flex-col"
+        >
 
-			{card.isHidden &&
-				<div className={"h-52 w-32 rounded-md bg-cover  transition-all filter " +
-					(card.haveBeenGuessed ? "opacity-0" : "hover:cursor-pointer")
-				} style={
-					{
-						backgroundImage: `url(${imgUrl})`
-					}
-				}>
-				</div>
-			}
+          <span>{(card as WordGameCardPlay).word}</span>
+        </div>
+        :
 
-			{!card.isHidden &&
-				(
-					<div className=" h-52 w-32 flex justify-center items-center border rounded-md p-2 bg-white transition-all hover:cursor-pointer" >
+        <div
+          id={card.pairID + "_image_card"}
+          className=" h-52 w-32 items-center justify-center rounded-md border bg-white p-2 transition-all  flex flex-col"
+        >
+          <img src={(card as ImageGameCardPlay).image.src} alt="" />
+        </div>
+      }
 
-						{!card.isHidden && (isWordCard() ?
-							((card) as WordGameCardPlay).word
-							:
-							<img src={((card) as ImageGameCardPlay).image.src} alt="" />
-						)
-						}
-					</div>
-				)
-			}
-
-
-		</>
-	)
+    </div>
+  );
 }
