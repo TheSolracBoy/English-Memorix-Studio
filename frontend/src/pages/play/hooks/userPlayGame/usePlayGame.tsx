@@ -4,7 +4,6 @@ import { getUserPlayGameData } from "./getUsePlayGameData";
 import { GameCard } from "@/models";
 import { shuffleArray, sleep } from "@/utils";
 
-// TODO: Extract the game logic to ./gameLogic.ts file
 
 interface GameState {
   havePlayedFirstCard: boolean;
@@ -58,7 +57,6 @@ export const usePlayGame = (id: number) => {
     } else {
       cardIdentifier = cardIdentifier + "_back_image_image";
     }
-    console.log("makebackimageviisble", cardIdentifier)
 
     let div = document.getElementById(cardIdentifier) as HTMLDivElement;
     let newClassName = div.className;
@@ -85,33 +83,27 @@ export const usePlayGame = (id: number) => {
   }
 
   async function handleClickOnCard(gameCardIndex: number) {
-    console.log(state.current)
     const cardRef = gameCards[gameCardIndex];
     if (!cardRef) {
       // null case
       return;
     }
     if (cardRef.haveBeenGuessed) {
-      console.log("2");
       return;
     }
     if (!cardRef.isHidden) {
-      console.log("3");
       return;
     }
 
     if (state.current.havePlayedSecondCard) {
-      console.log("4");
       return;
     }
 
     if (!state.current.havePlayedFirstCard) {
-      console.log("5");
       manageFirstPlay(gameCardIndex);
       return;
     }
 
-    console.log("6");
     await manageSecondCardPlay(gameCardIndex);
   }
 
@@ -140,26 +132,26 @@ export const usePlayGame = (id: number) => {
     const divImageID = pairID + "_image_card"
 
 
+    //Hide word card cover image
     let div = document.getElementById(divWordBackImageID) as HTMLDivElement
     let oldClassNames = div.className
     oldClassNames = oldClassNames + " opacity-0"
     oldClassNames = oldClassNames.replaceAll("hover:cursor-pointer","")
     div.className = oldClassNames
-    console.log(divWordBackImageID);
     
 
+    //Hide image card cover image
     div = document.getElementById(divImageBackImageID) as HTMLDivElement
     oldClassNames = div.className
     oldClassNames = oldClassNames + " opacity-0"
     oldClassNames = oldClassNames.replaceAll("hover:cursor-pointer","")
     div.className = oldClassNames
-    console.log(divImageBackImageID);
 
+    //Hide word card
     div = document.getElementById(divWordID) as HTMLDivElement
     oldClassNames = div.className
     oldClassNames = oldClassNames + " opacity-0"
     div.className = oldClassNames
-    console.log(divWordID);
 
 
     //Hide image card
@@ -167,7 +159,6 @@ export const usePlayGame = (id: number) => {
     oldClassNames = div.className
     oldClassNames = oldClassNames + " opacity-0"
     div.className = oldClassNames
-    console.log(divImageID);
 
   }
 
@@ -275,7 +266,6 @@ export const usePlayGame = (id: number) => {
     setGameCards(newGameCardsShuffle);
     setHasWonGame(false);
 
-    console.log("asdf")
   }
 
   return {
