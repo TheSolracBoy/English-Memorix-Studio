@@ -16,6 +16,7 @@ const initialState: GameState = {
   havePlayedSecondCard: false,
 };
 
+
 export const usePlayGame = (id: number) => {
   const [gameCards, setGameCards] = useState<GameCard[]>([]);
   const [title, setTitle] = useState("");
@@ -264,6 +265,8 @@ export const usePlayGame = (id: number) => {
     pairArray.current = idArray;
     setGameCards(newGameCardsShuffle);
     setHasWonGame(false);
+
+    console.log("asdf")
   }
 
   return {
