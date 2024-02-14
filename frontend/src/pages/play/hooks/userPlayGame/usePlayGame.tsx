@@ -16,7 +16,6 @@ const initialState: GameState = {
   havePlayedSecondCard: false,
 };
 
-
 export const usePlayGame = (id: number) => {
   const [gameCards, setGameCards] = useState<GameCard[]>([]);
   const [title, setTitle] = useState("");
@@ -136,15 +135,15 @@ export const usePlayGame = (id: number) => {
     let div = document.getElementById(divWordBackImageID) as HTMLDivElement
     let oldClassNames = div.className
     oldClassNames = oldClassNames + " opacity-0"
-    oldClassNames = oldClassNames.replaceAll("hover:cursor-pointer","")
+    oldClassNames = oldClassNames.replaceAll("hover:cursor-pointer", "")
     div.className = oldClassNames
-    
+
 
     //Hide image card cover image
     div = document.getElementById(divImageBackImageID) as HTMLDivElement
     oldClassNames = div.className
     oldClassNames = oldClassNames + " opacity-0"
-    oldClassNames = oldClassNames.replaceAll("hover:cursor-pointer","")
+    oldClassNames = oldClassNames.replaceAll("hover:cursor-pointer", "")
     div.className = oldClassNames
 
     //Hide word card
@@ -265,7 +264,6 @@ export const usePlayGame = (id: number) => {
     pairArray.current = idArray;
     setGameCards(newGameCardsShuffle);
     setHasWonGame(false);
-
   }
 
   return {
