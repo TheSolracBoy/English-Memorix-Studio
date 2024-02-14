@@ -8,7 +8,7 @@ import bgMusic from "../../assets/music/bg.mp3";
 import celebrationMusic from "@/assets/music/celebration.mp3";
 import trophyImage from "@/assets/images/trophy.png";
 import { useEffect, useRef, useState } from "react";
-import { Trophy, Volume, Volume2, VolumeX } from "lucide-react";
+import { Volume2, VolumeX } from "lucide-react";
 
 export const PlayGame = () => {
   const params = useParams();
