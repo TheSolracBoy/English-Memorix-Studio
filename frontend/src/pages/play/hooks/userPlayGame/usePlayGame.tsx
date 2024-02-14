@@ -266,7 +266,6 @@ export const usePlayGame = (id: number) => {
     setGameCards(newGameCardsShuffle);
     setHasWonGame(false);
 
-    console.log("asdf")
   }
 
   return {
