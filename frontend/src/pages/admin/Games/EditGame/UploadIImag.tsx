@@ -5,6 +5,7 @@ import { CropperRef } from "react-advanced-cropper";
 import { Button, Input } from "@nextui-org/react";
 
 import { Image } from "@/models/index";
+import { LoadImageFromFile } from "../../../../../wailsjs/go/app/App";
 
 interface Props {
   image: Image | null;
@@ -28,62 +29,59 @@ export default function UploadImage(props: Props) {
     }
   };
 
-  const onLoadImage = (event: ChangeEvent<HTMLInputElement>) => {
-    const { files } = event.target;
+  const onLoadImage = async () => {
 
-    if (files && files[0]) {
-      const blob = URL.createObjectURL(files[0]);
+    const file = await LoadImageFromFile()
+    console.log(file)
 
-      props.handleSetImage({
-        src: blob,
-        type: files[0].type,
-      });
-      setTempImage({
-        src: blob,
-        type: files[0].type,
-      });
-    }
-    event.target.value = "";
-  };
+    const urlBase64 = "data:" +file.type +";base64," +file.base64
 
 
+    props.handleSetImage({
+      src: urlBase64,
+      type: file.type
+    });
+    setTempImage({
+      src: urlBase64,
+      type: file.type
+    });
+  }
 
-  return (
-    <div className="upload-example">
-      {props.image !== null && (
-        <Cropper
-          ref={cropperRef}
-          className=""
-          src={tempImage && tempImage.src}
-        />
-      )}
-      {props.image === null && (
-        <Input
-          onInput={onLoadImage}
-          type="file"
-          accept="image/*"
-          onChange={onLoadImage}
-        />
-      )}
-      <div className="mt-2 flex justify-center  gap-2 ">
-        <Button
-          size="sm"
-          onClick={() => {
-            props.handleSetImage(null);
-          }}
-        >
-          Change image
-        </Button>
 
-        <Button
-          size="sm"
-          onClick={() => {
-            onCrop();
-          }}
-        >
-          Resize
-        </Button>
+
+return (
+  <div className="">
+    {props.image !== null && (
+      <Cropper
+        ref={cropperRef}
+        className=""
+        src={tempImage && tempImage.src}
+      />
+    )}
+      <div className="flex flex-col items-center">
+    {props.image === null && (
+      <Button onClick={onLoadImage} size="sm" className="w-44 self-center" >Select image</Button>
+    )}
+    <div className="mt-2 flex justify-center  gap-2 ">
+      <Button
+        size="sm"
+        onClick={() => {
+          props.handleSetImage(null);
+        }}
+      >
+        Change image
+      </Button>
+
+      <Button
+        size="sm"
+        onClick={() => {
+          onCrop();
+        }}
+      >
+        Resize
+      </Button>
       </div>
     </div>
-  );
+  </div>
+);
 }

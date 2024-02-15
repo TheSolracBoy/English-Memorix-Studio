@@ -23,14 +23,13 @@ export default function GameCardUI({ card }: GameCardProps) {
 
         <div
           id={card.identifier}
-          className=" h-52 w-32 items-center justify-center rounded-md border bg-white p-2 flex flex-col opacity-0"
+          className="flex h-52 w-32 bg-white items-center justify-center rounded-md border  overflow-hidden "
         >
         {
           isWordCard() ?
-          <span>{(card as WordGameCardPlay).word}</span>
+          <span className="p-2">{(card as WordGameCardPlay).word}</span>
           :
-
-          <img src={(card as ImageGameCardPlay).image.src} alt="" />
+          <img className="overflow-hidden" src={(card as ImageGameCardPlay).image.src} alt="" />
         }
 
         </div>

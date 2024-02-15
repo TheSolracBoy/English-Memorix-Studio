@@ -37,6 +37,8 @@ export function LoadCategoryName(arg1:number):Promise<string>;
 
 export function LoadGames():Promise<Array<database.Game>>;
 
+export function LoadImageFromFile():Promise<app.File>;
+
 export function SelectImageFolder():Promise<string>;
 
 export function SetDatabase():Promise<string>;
