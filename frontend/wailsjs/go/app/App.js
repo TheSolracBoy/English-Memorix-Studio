@@ -70,6 +70,10 @@ export function LoadGames() {
   return window['go']['app']['App']['LoadGames']();
 }
 
+export function LoadImageFromFile() {
+  return window['go']['app']['App']['LoadImageFromFile']();
+}
+
 export function SelectImageFolder() {
   return window['go']['app']['App']['SelectImageFolder']();
 }

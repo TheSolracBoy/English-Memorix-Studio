@@ -1,5 +1,19 @@
 export namespace app {
 	
+	export class File {
+	    type: string;
+	    base64: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new File(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.type = source["type"];
+	        this.base64 = source["base64"];
+	    }
+	}
 	export class PairsWithBase64Image {
 	    word: string;
 	    imageFormat: string;

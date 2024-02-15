@@ -17,7 +17,7 @@ export default function Pair(props: Props) {
 
       <div className="flex flex-col items-center justify-center">
         <span>Image Card</span>
-        <div className="flex h-52 w-32 items-center justify-center rounded-md border p-2">
+        <div className="flex h-52 w-32 items-center justify-center rounded-md border bg-white  overflow-hidden ">
           {props.image?.src && <img className="" src={props.image?.src} />}
         </div>
       </div>
