@@ -19,13 +19,15 @@ function generateImageFromBase64(imageFormat: string, base64Image: string): Imag
 function transformPairToGameCards(pair: app.PairWithBase64Image): PairOfGameCards {
 
 	const wordCard: WordGameCardPlay = {
+		identifier: pair.id + "_word",
 		haveBeenGuessed: false,
 		isHidden: true,
 		pairID: pair.id,
 		word: pair.word
-	}
 
+	}
 	const imageCard: ImageGameCardPlay = {
+		identifier: pair.id + "_image",
 		haveBeenGuessed: false,
 		isHidden: true, pairID: pair.id,
 		image: generateImageFromBase64(pair.image_format, pair.base64_image)
@@ -38,34 +40,30 @@ function transformPairToGameCards(pair: app.PairWithBase64Image): PairOfGameCard
 
 }
 
-export const getUserPlayGameData = async (
+export async function getUserPlayGameData(
 	id: number,
 	setTitle: (a: string) => void,
-	setGameCards: (a: GameCard[]) => void,
 	pairIDSRef: React.MutableRefObject<string[]>
-) => {
+): Promise<GameCard[]> {
 	try {
-		const response = await GetPlayGameInfo(id)
-		console.log(response)
-		setTitle(response.game_title)
-		let gameCards: GameCard[] = []
+		const game = await GetPlayGameInfo(id);
+		setTitle(game.game_title);
+		const gameCards: GameCard[] = [];
 
-		response.pairs.forEach(
-			(pair) => {
-				pairIDSRef.current.push(pair.id)
-				const gameCardPair = transformPairToGameCards(pair)
-				gameCards.push(gameCardPair.imageCard)
-				gameCards.push(gameCardPair.wordCard)
-			}
-		)
+		game.pairs.forEach((pair) => {
+			pairIDSRef.current.push(pair.id);
+			const gameCardPair = transformPairToGameCards(pair);
+			gameCards.push(gameCardPair.imageCard);
+			gameCards.push(gameCardPair.wordCard);
+		});
 
-		gameCards = shuffleArray(gameCards)
-		console.log("inside getUse", gameCards)
-		setGameCards(gameCards)
-		console.log(gameCards)
-
-	}
-	catch (error) {
-		console.log(error);
+		const shuffledGameCards = shuffleArray(gameCards);
+		console.log(shuffledGameCards);
+		return shuffledGameCards;
+	} catch (error) {
+		// Handle error if GetPlayGameInfo() fails
+		console.error('Error:', error);
+		return [];
 	}
 }
+

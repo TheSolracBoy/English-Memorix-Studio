@@ -14,31 +14,26 @@ export default function GameCardUI({ card }: GameCardProps) {
   return (
     <div className="relative">
       <div
-        id={card.pairID + "_back_image" + (isWordCard() ? "_word" : "_image")}
+        id={card.identifier + "_back_image"}
         className="absolute h-52 w-32 rounded-md bg-cover  filter transition-all hover:cursor-pointer"
         style={{
           backgroundImage: `url(${imgUrl})`,
         }}
       ></div>
 
-      {isWordCard() ?
         <div
-          id={card.pairID + "_word_card"}
-          className=" h-52 w-32 items-center justify-center rounded-md border bg-white p-2 transition-all  flex flex-col"
+          id={card.identifier}
+          className=" h-52 w-32 items-center justify-center rounded-md border bg-white p-2 flex flex-col opacity-0"
         >
-
+        {
+          isWordCard() ?
           <span>{(card as WordGameCardPlay).word}</span>
-        </div>
-        :
+          :
 
-        <div
-          id={card.pairID + "_image_card"}
-          className=" h-52 w-32 items-center justify-center rounded-md border bg-white p-2 transition-all  flex flex-col"
-        >
           <img src={(card as ImageGameCardPlay).image.src} alt="" />
-        </div>
-      }
+        }
 
+        </div>
     </div>
   );
 }
