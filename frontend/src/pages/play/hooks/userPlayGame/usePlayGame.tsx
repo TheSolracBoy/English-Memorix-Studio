@@ -31,55 +31,54 @@ export const usePlayGame = (id: number) => {
   useEffect(() => {
     const loadData = async () => {
       setIsLoading(true);
-      await getUserPlayGameData(id, setTitle, setGameCards, pairArray);
+      const cards = await getUserPlayGameData(id, setTitle, pairArray);
+      setGameCards(cards)
       state.current = {
         havePlayedFirstCard: false,
         havePlayedSecondCard: false,
       }
-
+      setIsLoading(false);
       setHasStartGame(true);
       handleStartTimer();
 
-      setIsLoading(false);
+
+
     };
     loadData();
     return () => { };
   }, []);
 
-  function makeBackImageVisible(gameCardIndex: number) {
+
+  useEffect(() => {
+    console.log("triggered")
+    if (!hasWonGame) {
+      for (let index = 0; index < gameCards.length; index++) {
+        const card = gameCards[index];
+        showCardContent(card.identifier)
+      }
+
+    }
+  }, [hasWonGame, hasStartGame]);
+
+
+
+  function makeBackImageVisible(domID: string) {
 
     //Show back image
-    const pairId = gameCards[gameCardIndex].pairID
-    let cardIdentifier = pairId
-
-    if ("word" in gameCards[gameCardIndex]) {
-      cardIdentifier = cardIdentifier + "_back_image_word";
-    } else {
-      cardIdentifier = cardIdentifier + "_back_image_image";
-    }
-
-    let div = document.getElementById(cardIdentifier) as HTMLDivElement;
+    let div = document.getElementById(domID + "_back_image") as HTMLDivElement;
     let newClassName = div.className;
     newClassName = newClassName.replace("opacity-0", "");
     newClassName = newClassName + "hover:cursor-pointer"
     div.className = newClassName
   }
 
-  function makeBackImageOpacityToZero(pairIdIdentifier: string, gameCardIndex: number) {
+  function hideBackCardCover(domIDCard: string) {
     //Hide backcard
-    let idCoverToHide = pairIdIdentifier + "_back_image";
-    if ("word" in gameCards[gameCardIndex]) {
-      idCoverToHide = idCoverToHide + "_word";
-    } else {
-      idCoverToHide = idCoverToHide + "_image";
-    }
-
-    const div = document.getElementById(idCoverToHide) as HTMLDivElement;
+    const div = document.getElementById(domIDCard + "_back_image") as HTMLDivElement;
     let newClassName = div.className;
     newClassName = newClassName.replace("hover:cursor-pointer", "");
     newClassName = newClassName + "opacity-0"
     div.className = newClassName
-
   }
 
   async function handleClickOnCard(gameCardIndex: number) {
@@ -107,6 +106,11 @@ export const usePlayGame = (id: number) => {
     await manageSecondCardPlay(gameCardIndex);
   }
 
+  function showCardContent(domID: string) {
+    const node = document.getElementById(domID) as HTMLDivElement
+    let newClassname = node.className
+    node.className = newClassname.replace("opacity-0", "")
+  }
 
   function manageFirstPlay(gameCardIndex: number) {
     setGameCards(
@@ -118,33 +122,34 @@ export const usePlayGame = (id: number) => {
       }),
     );
 
-    let pairIdIdentifier = gameCards[gameCardIndex].pairID;
-    makeBackImageOpacityToZero(pairIdIdentifier, gameCardIndex)
+    let cardIdentifier = gameCards[gameCardIndex].identifier;
+    hideBackCardCover(cardIdentifier)
 
     state.current.havePlayedFirstCard = true;
     state.current.firstCardIndex = gameCardIndex;
   }
 
   function hideCardsCompletely(pairID: string) {
-    const divWordBackImageID = pairID + "_back_image_word"
-    const divImageBackImageID = pairID + "_back_image_image"
-    const divWordID = pairID + "_word_card"
-    const divImageID = pairID + "_image_card"
+    const divWordBackImageID = pairID + "_word_back_image"
+    const divImageBackImageID = pairID + "_image_back_image"
+
+    const divWordID = pairID + "_word"
+    const divImageID = pairID + "_image"
 
 
     //Hide word card cover image
     let div = document.getElementById(divWordBackImageID) as HTMLDivElement
     let oldClassNames = div.className
     oldClassNames = oldClassNames + " opacity-0"
-    oldClassNames = oldClassNames.replaceAll("hover:cursor-pointer","")
+    oldClassNames = oldClassNames.replaceAll("hover:cursor-pointer", "")
     div.className = oldClassNames
-    
+
 
     //Hide image card cover image
     div = document.getElementById(divImageBackImageID) as HTMLDivElement
     oldClassNames = div.className
     oldClassNames = oldClassNames + " opacity-0"
-    oldClassNames = oldClassNames.replaceAll("hover:cursor-pointer","")
+    oldClassNames = oldClassNames.replaceAll("hover:cursor-pointer", "")
     div.className = oldClassNames
 
     //Hide word card
@@ -204,10 +209,10 @@ export const usePlayGame = (id: number) => {
     );
 
     // Show cover image
-    makeBackImageVisible(firstCardIndex)
-    makeBackImageVisible(secondCardIndex)
-
-
+    const firstCardIdentifier = gameCards[firstCardIndex].identifier
+    const secondCardIdentifier = gameCards[secondCardIndex].identifier
+    makeBackImageVisible(firstCardIdentifier)
+    makeBackImageVisible(secondCardIdentifier)
 
     state.current.havePlayedFirstCard = false;
     state.current.havePlayedSecondCard = false;
@@ -225,13 +230,13 @@ export const usePlayGame = (id: number) => {
       }),
     );
 
+    const actualCard = gameCards[gameCardIndex];
 
     //Show the new card
-    let pairIdIdentifier = gameCards[gameCardIndex].pairID;
-    makeBackImageOpacityToZero(pairIdIdentifier, gameCardIndex)
+    let cardIdentifier = actualCard.identifier
+    hideBackCardCover(cardIdentifier)
 
 
-    const actualCard = gameCards[gameCardIndex];
 
     await sleep(1000); // Give the chanced to the user to memorize the card
     const previousCard = gameCards[state.current.firstCardIndex as number];
@@ -245,8 +250,8 @@ export const usePlayGame = (id: number) => {
   }
 
   function handleRestartGame() {
-    setHasStartGame(true);
-    handleRestartTimer();
+    setHasStartGame(false);
+    setIsLoading(true)
 
     const newGameCards = gameCards.map((oldCard) => {
       oldCard.haveBeenGuessed = false;
@@ -264,8 +269,11 @@ export const usePlayGame = (id: number) => {
 
     pairArray.current = idArray;
     setGameCards(newGameCardsShuffle);
-    setHasWonGame(false);
+    setHasStartGame(true);
 
+    setHasWonGame(false);
+    setIsLoading(false)
+    handleRestartTimer();
   }
 
   return {

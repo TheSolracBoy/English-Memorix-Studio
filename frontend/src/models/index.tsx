@@ -13,6 +13,7 @@ export interface GameCard {
   pairID: string
   isHidden: boolean
   haveBeenGuessed: boolean
+  identifier:string
 }
 export interface ImageGameCardPlay extends GameCard {
   image: Image
