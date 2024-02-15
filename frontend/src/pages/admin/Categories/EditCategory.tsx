@@ -23,7 +23,8 @@ export const EditCategory = () => {
     setInfo();
   }, []);
 
-  const handleEditCategory = async () => {
+  const handleEditCategory = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
     if (newCategory === "") {
       return;
     }
@@ -33,7 +34,6 @@ export const EditCategory = () => {
     }
 
     try {
-
       await EC(Number(params.id), newCategory);
       navigate("../");
     } catch (error) {
@@ -48,7 +48,7 @@ export const EditCategory = () => {
 
   return (
     <AdminLayout title="Edit Category">
-      <form className="flex flex-col" onSubmit={handleEditCategory}>
+      <form className="flex flex-col" onSubmit={(e)=>handleEditCategory(e)}>
         <Input
           value={newCategory}
           aria-labelledby="Enter new Category name"
