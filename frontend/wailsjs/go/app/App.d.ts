@@ -3,9 +3,13 @@
 import {app} from '../models';
 import {database} from '../models';
 
+export function AddPairToTemporary(arg1:app.AddPairToTemporaryInput):Promise<number>;
+
 export function Alert(arg1:string,arg2:string):Promise<void>;
 
 export function AskUserForConfirmation(arg1:string,arg2:string):Promise<boolean>;
+
+export function CopyGame(arg1:number):Promise<void>;
 
 export function CreateDatabase():Promise<string>;
 
@@ -15,7 +19,9 @@ export function CreateNewGame(arg1:string,arg2:string,arg3:Array<number>):Promis
 
 export function EditCategory(arg1:number,arg2:string):Promise<void>;
 
-export function EditGame(arg1:number,arg2:string,arg3:string,arg4:Array<number>,arg5:Array<app.InputPair>):Promise<database.Game>;
+export function EditFromTemporary(arg1:number,arg2:app.AddPairToTemporaryInput):Promise<void>;
+
+export function EditGame(arg1:number,arg2:string,arg3:string,arg4:Array<number>):Promise<database.Game>;
 
 export function EraseCategory(arg1:number):Promise<string>;
 
@@ -38,6 +44,8 @@ export function LoadCategoryName(arg1:number):Promise<string>;
 export function LoadGames():Promise<Array<database.Game>>;
 
 export function LoadImageFromFile():Promise<app.File>;
+
+export function RemoveFromTemporary(arg1:number):Promise<void>;
 
 export function SelectImageFolder():Promise<string>;
 

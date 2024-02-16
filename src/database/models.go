@@ -22,3 +22,11 @@ type Pair struct {
 	ImageFormat string `json:"image_format"`
 	Bytes       []byte `json:"bytes"`
 }
+
+type TemporaryPair struct {
+	ID          uint   `gorm:"primaryKey" json:"id"`
+	GameID      uint   `json:"game_id"`
+	Word        string `json:"word"`
+	ImageFormat string `json:"image_format"`
+	Bytes       []byte `json:"bytes"`
+}

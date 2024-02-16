@@ -1,3 +1,3 @@
 package environment
 
-const DEV_ENV = false
+const DEV_ENV = true
