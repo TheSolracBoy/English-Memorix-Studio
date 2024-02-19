@@ -105,6 +105,7 @@ func (a *App) EraseGame(id uint) error {
 }
 
 type PairsWithBase64Image struct {
+	ID          uint   `json:"id"`
 	Word        string `json:"word"`
 	ImageFormat string `json:"imageFormat"`
 	Base64Image string `json:"base64Image"`
@@ -142,6 +143,7 @@ func (a *App) GetGameInfo(id uint) (GameInfo, error) {
 		bytes := pair.Bytes
 		base64image := base64.StdEncoding.EncodeToString(bytes)
 		response.Pairs = append(response.Pairs, PairsWithBase64Image{
+			ID:          pair.ID,
 			Word:        pair.Word,
 			ImageFormat: pair.ImageFormat,
 			Base64Image: base64image,
@@ -162,7 +164,6 @@ func (a *App) EditGame(
 	title string,
 	description string,
 	categoriesIDS []uint,
-	pairs []InputPair,
 ) (database.Game, error) {
 	db, err := database.GetDatabase()
 	if err != nil {
@@ -201,19 +202,35 @@ func (a *App) EditGame(
 			return err
 		}
 
-		for _, pair := range pairs {
+		var pairs []database.TemporaryPair
+		if err := tx.Where("game_id = ?", id).Find(&pairs).Error; err != nil {
+			return err
+		}
 
-			//Create the pair
-			var newPair database.Pair
-			newPair.GameID = id
-			newPair.Word = pair.Word
-			newPair.Bytes = pair.Bytes
-			newPair.ImageFormat = pair.ImageFormat
-			if err := tx.Create(&newPair).Error; err != nil {
+		for _, temporaryPair := range pairs {
+			println("this is ")
+			println(temporaryPair.Word)
+			println(temporaryPair.ID)
+
+			// Pass from temporary pair table to pair table
+			pair := database.Pair{
+				ID:          temporaryPair.ID,
+				GameID:      temporaryPair.GameID,
+				Word:        temporaryPair.Word,
+				ImageFormat: temporaryPair.ImageFormat,
+				Bytes:       temporaryPair.Bytes,
+			}
+			err = tx.Create(&pair).Error
+			if err != nil {
 				globalError = err
 				return err
 			}
+		}
 
+		err = tx.Exec("DELETE from temporary_pairs where game_id = ? ", id).Error
+		if err != nil {
+			globalError = err
+			return err
 		}
 		return nil
 	})
