@@ -1,5 +1,23 @@
 export namespace app {
 	
+	export class AddPairToTemporaryInput {
+	    word: string;
+	    game_id: number;
+	    base64_image: string;
+	    image_format: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new AddPairToTemporaryInput(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.word = source["word"];
+	        this.game_id = source["game_id"];
+	        this.base64_image = source["base64_image"];
+	        this.image_format = source["image_format"];
+	    }
+	}
 	export class File {
 	    type: string;
 	    base64: string;
@@ -15,6 +33,7 @@ export namespace app {
 	    }
 	}
 	export class PairsWithBase64Image {
+	    id: number;
 	    word: string;
 	    imageFormat: string;
 	    base64Image: string;
@@ -25,6 +44,7 @@ export namespace app {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.id = source["id"];
 	        this.word = source["word"];
 	        this.imageFormat = source["imageFormat"];
 	        this.base64Image = source["base64Image"];
@@ -115,22 +135,6 @@ export namespace app {
 		    }
 		    return a;
 		}
-	}
-	export class InputPair {
-	    word: string;
-	    bytes: number[];
-	    imageFormat: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new InputPair(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.word = source["word"];
-	        this.bytes = source["bytes"];
-	        this.imageFormat = source["imageFormat"];
-	    }
 	}
 	
 

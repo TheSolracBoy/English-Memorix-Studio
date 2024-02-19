@@ -50,14 +50,20 @@ export const usePlayGame = (id: number) => {
 
 
   useEffect(() => {
-    console.log("triggered")
+
+    const wait = async ()=>{
+      await sleep(100)
+
     if (!hasWonGame) {
       for (let index = 0; index < gameCards.length; index++) {
+        console.log(index)
         const card = gameCards[index];
         showCardContent(card.identifier)
       }
-
     }
+    }
+    
+    wait()
   }, [hasWonGame, hasStartGame]);
 
 
@@ -108,8 +114,11 @@ export const usePlayGame = (id: number) => {
 
   function showCardContent(domID: string) {
     const node = document.getElementById(domID) as HTMLDivElement
-    let newClassname = node.className
-    node.className = newClassname.replace("opacity-0", "")
+    // let newClassname = node.className
+    // node.className = newClassname.replaceAll("opacity-0", "")
+    console.log(node.id, node.style.opacity )
+    node.style.opacity = "1"
+    console.log(node.id, node.style.opacity )
   }
 
   function manageFirstPlay(gameCardIndex: number) {
@@ -154,17 +163,12 @@ export const usePlayGame = (id: number) => {
 
     //Hide word card
     div = document.getElementById(divWordID) as HTMLDivElement
-    oldClassNames = div.className
-    oldClassNames = oldClassNames + " opacity-0"
-    div.className = oldClassNames
+    div.style.opacity = "0"
 
 
     //Hide image card
     div = document.getElementById(divImageID) as HTMLDivElement
-    oldClassNames = div.className
-    oldClassNames = oldClassNames + " opacity-0"
-    div.className = oldClassNames
-
+    div.style.opacity = "0"
   }
 
   function manageFoundPair(firstCardIndex: number, secondCardIndex: number) {
@@ -197,7 +201,9 @@ export const usePlayGame = (id: number) => {
       setHasWonGame(true);
     }
   }
+  
 
+  
   function manageNotFoundPair(firstCardIndex: number, secondCardIndex: number) {
     setGameCards(
       gameCards.map((gameCard, i) => {

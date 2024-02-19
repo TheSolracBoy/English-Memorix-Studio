@@ -8,10 +8,14 @@ import {
   EditGame,
   AskUserForConfirmation,
   Alert,
+  CopyGame,
+  RemoveFromTemporary,
+  AddPairToTemporary,
+  EditFromTemporary,
 } from "../../../../../wailsjs/go/app/App";
 
 import { useNavigate } from "react-router-dom";
-import { Image, TempPair } from "@/models";
+import { Image, Pair, TempPair } from "@/models";
 import { app } from "../../../../../wailsjs/go/models";
 import { getBinaryFromUrl } from "@/utils";
 
@@ -40,7 +44,7 @@ export const useEditGame = (props: Props) => {
   const [blob, setBlob] = useState<Blob>(new Blob());
 
   const [tempPair, setTempPair] = useState<TempPair>(emptyTempPair);
-  const [pairs, setPairs] = useState<TempPair[]>([]);
+  const [pairs, setPairs] = useState<Pair[]>([]);
 
   const [editingSavedPairID, setEditingSavedPairID] = useState<number | null>(null)
   const [isLoadingSaveEdit, setIsLoadingSaveEdit] = useState(false)
@@ -55,7 +59,7 @@ export const useEditGame = (props: Props) => {
     }
   }
 
-  function handleSaveEditingOldPair(newPair: TempPair) {
+  async function handleSaveEditingOldPair(newPair: Pair) {
     if (editingSavedPairID === null) {
       return
     }
@@ -65,12 +69,18 @@ export const useEditGame = (props: Props) => {
         (pair, index) => {
           if (index == editingSavedPairID) {
             return newPair
-
           }
           return pair
         }
       )
     )
+
+    await EditFromTemporary(newPair.id, {
+      word: newPair.wordCard.word,
+      game_id: gameID,
+      base64_image: newPair.tempImageCard.image?.src.split(",")[1] as string,
+      image_format: newPair.tempImageCard.image?.type as string,
+    })
 
     setEditingSavedPairID(null)
   }
@@ -105,16 +115,17 @@ export const useEditGame = (props: Props) => {
     });
   }
 
-  function handleRemovePair(index: number) {
-    if (
-      pairs[index] !== null &&
-      pairs[index].tempImageCard.image !== null &&
-      pairs[index].tempImageCard.image?.src !== null
-    ) {
-      URL.revokeObjectURL(pairs[index].tempImageCard.image?.src as string);
-      setPairs(pairs.filter((_, i) => i !== index));
-    }
-  }
+  // async function handleRemovePair(index: number) {
+  //   if (
+  //     pairs[index] !== null &&
+  //     pairs[index].tempImageCard.image !== null &&
+  //     pairs[index].tempImageCard.image?.src !== null
+  //   ) {
+  //     URL.revokeObjectURL(pairs[index].tempImageCard.image?.src as string);
+  //     setPairs(pairs.filter((_, i) => i !== index));
+  //     await RemoveFromTemporary(index)
+  //   }
+  // }
 
   async function handleSavePair() {
     let message = "";
@@ -132,14 +143,22 @@ export const useEditGame = (props: Props) => {
       return;
     }
 
-    const response = await fetch(tempPair.tempImageCard.image?.src as string);
-    const blob = await response.blob();
-    const blobUrl = URL.createObjectURL(blob);
+    // const response = await fetch(tempPair.tempImageCard.image?.src as string);
+    // const blob = await response.blob();
+    // const blobUrl = URL.createObjectURL(blob);
 
-    const newPair: TempPair = {
+    const id = await AddPairToTemporary({
+      word: tempPair.wordCard.word,
+      game_id: gameID,
+      base64_image: (tempPair.tempImageCard.image?.src as string).split(',')[1],
+      image_format: tempPair.tempImageCard.image?.type as string
+    })
+
+    const newPair: Pair = {
+      id: id,
       tempImageCard: {
         image: {
-          src: blobUrl,
+          src: tempPair.tempImageCard.image?.src as string,
           type: tempPair.tempImageCard.image?.type,
         },
       },
@@ -152,13 +171,19 @@ export const useEditGame = (props: Props) => {
     setTempPair(emptyTempPair);
     setShowAddNewPair(false);
 
+
+
     alert("Pair saved");
   }
 
   useEffect(() => {
-    getCategories();
-    getGameInformation();
-    getCategoriesFromGame();
+    const a = async () => {
+      await CopyGame(gameID)
+      await getCategories();
+      await getGameInformation();
+      await getCategoriesFromGame();
+    }
+    a()
   }, []);
 
   useEffect(() => {
@@ -192,26 +217,19 @@ export const useEditGame = (props: Props) => {
 
       setGameTitle(gameInfo.title);
       setNewGameDescription(gameInfo.description);
-      let newPairs: TempPair[] = [];
+      let newPairs: Pair[] = [];
 
 
       gameInfo.pairs.forEach((pair) => {
-        const base = pair.base64Image;
-        var binaryImageData = atob(base);
-        var byteArray = new Uint8Array(binaryImageData.length);
-
-        for (var i = 0; i < binaryImageData.length; i++) {
-          byteArray[i] = binaryImageData.charCodeAt(i);
-        }
-        var blob = new Blob([byteArray], { type: pair.imageFormat }); // Adjust the MIME type based on your image format
 
         newPairs.push({
+          id: pair.id,
           wordCard: {
             word: pair.word,
           },
           tempImageCard: {
             image: {
-              src: URL.createObjectURL(blob),
+              src: "data:" + pair.imageFormat + ";base64," + pair.base64Image,
               type: pair.imageFormat,
             },
           },
@@ -219,6 +237,7 @@ export const useEditGame = (props: Props) => {
       });
 
       setPairs(newPairs);
+      console.log(newPairs)
       setIsLoadingPairs(false)
     } catch (error) {
       console.log(error);
@@ -239,27 +258,24 @@ export const useEditGame = (props: Props) => {
     }
     setIsLoadingSaveEdit(true)
 
-    let inputPairs: app.InputPair[] = [];
-    let counter = 0;
-    for (const pair of pairs) {
-      counter++;
+    // let inputPairs: app.InputPair[] = [];
+    // for (const pair of pairs) {
+    //   let binaryImage;
+    //   try {
+    //     binaryImage = await getBinaryFromUrl(
+    //       pair.tempImageCard.image?.src as string,
+    //     );
+    //   } catch (error) {
+    //     alert(error);
+    //     return;
+    //   }
 
-      let binaryImage;
-      try {
-        binaryImage = await getBinaryFromUrl(
-          pair.tempImageCard.image?.src as string,
-        );
-      } catch (error) {
-        alert(error);
-        return;
-      }
-
-      inputPairs.push({
-        bytes: binaryImage,
-        imageFormat: pair.tempImageCard.image?.type as string,
-        word: pair.wordCard.word,
-      });
-    }
+    //   inputPairs.push({
+    //     bytes: binaryImage,
+    //     imageFormat: pair.tempImageCard.image?.type as string,
+    //     word: pair.wordCard.word,
+    //   });
+    // }
     console.log("End")
 
     try {
@@ -268,7 +284,6 @@ export const useEditGame = (props: Props) => {
         gameTitle,
         newGameDescription,
         selectedCategoriesIDs,
-        inputPairs,
       );
     } catch (error) {
       setIsLoadingSaveEdit(false)
@@ -305,9 +320,6 @@ export const useEditGame = (props: Props) => {
     setShowAddNewPair(false);
   }
 
-  const manageFileUpdate = (he: any) => {
-    setFiles(he);
-  };
 
   async function getCategories() {
     try {
@@ -332,6 +344,7 @@ export const useEditGame = (props: Props) => {
       await Alert("Can't delete pair", "You have another pair being edited, pls finish editing that pair before continue")
       return
     }
+    let pairIdentifier = pairs[index].id
     setPairs(
       pairs.filter((pair, i) => {
         if (i !== index) {
@@ -339,6 +352,9 @@ export const useEditGame = (props: Props) => {
         }
       })
     )
+    console.log(pairIdentifier);
+
+    await RemoveFromTemporary(pairIdentifier)
   }
 
   const [files, setFiles] = useState<any>([]);
@@ -367,7 +383,6 @@ export const useEditGame = (props: Props) => {
     handleChangeWordTempPair,
     handleChangeImage,
     pairs,
-    handleRemovePair,
     handleEditSavedPair,
     editingSavedPairID,
     handleCancelEditingSavedPair,

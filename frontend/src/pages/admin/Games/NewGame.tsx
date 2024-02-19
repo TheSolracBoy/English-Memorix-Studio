@@ -79,7 +79,7 @@ export const NewGame = () => {
           aria-labelledby="Enter new game title"
           onValueChange={setNewGameName}
           type="text"
-          placeholder="Enter new Category name"
+          placeholder="Enter new game title"
         />
         <Textarea
           value={newGameDescription}

@@ -1,47 +1,13 @@
 {
-  "name": "memorygame",
-  "frontend:build": "bun run build",
-  "frontend:install": "bun install",
-  "frontend:dev": "",
-  "frontend:dev:build": "",
-  "frontend:dev:install": "",
-  "frontend:dev:watcher": "bun run dev",
+  "$schema": "https://wails.io/schemas/config.v2.json",
+  "name": "English Memorix Studio",
+  "outputfilename": "English Memorix Studio",
+  "frontend:install": "npm install",
+  "frontend:build": "npm run build",
+  "frontend:dev:watcher": "npm run dev",
   "frontend:dev:serverUrl": "auto",
-  "wailsjsdir": "./frontend",
-  "version": "2",
-  "projectdir": "./",
-  "build:dir": "build",
-  "outputfilename": "memorygame",
-  "OutputType": "",
-  "Platform": "",
-  "runNonNativeBuildHooks": false,
-  "postBuildHooks": null,
-  "preBuildHooks": null,
-  "Author": {
-    "name": "",
+  "author": {
+    "name": "charlieman2700",
     "email": "carlos.ace27@gmail.com"
-  },
-  "Info": {
-    "companyName": "memorygame",
-    "productName": "memorygame",
-    "productVersion": "1.0.0",
-    "copyright": "Copyright.........",
-    "comments": "Built using Wails (https://wails.io)",
-    "fileAssociations": null,
-    "protocols": null
-  },
-  "debounceMS": 3000,
-  "devServer": "localhost:34115",
-  "appargs": "",
-  "nsisType": "multiple",
-  "obfuscated": false,
-  "garbleargs": "",
-  "frontend:dir": "frontend",
-  "bindings": {
-    "ts_generation": {
-      "prefix": "",
-      "suffix": "",
-      "outputType": ""
-    }
   }
 }

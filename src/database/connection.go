@@ -8,7 +8,8 @@ import (
 
 	"tcu/src/environment"
 
-	"gorm.io/driver/sqlite"
+	// "gorm.io/driver/sqlite"
+	"github.com/glebarez/sqlite" // Pure go SQLite driver, checkout https://github.com/glebarez/sqlite for details
 	"gorm.io/gorm"
 )
 
@@ -47,7 +48,7 @@ func CreateNewDatabase(path string) (*gorm.DB, error) {
 		defer f.Close()
 
 		db, err := gorm.Open(sqlite.Open(newPath), &gorm.Config{})
-		db.AutoMigrate(&Category{}, &Game{}, &Pair{})
+		db.AutoMigrate(&Category{}, &Game{}, &Pair{}, &TemporaryPair{})
 
 		if err != nil {
 			panic("failed to connect database")
@@ -69,7 +70,7 @@ func LoadDatabase(path string) *gorm.DB {
 			panic("failed to connect database")
 		}
 		database = db
-		db.AutoMigrate(&Category{}, &Game{}, &Pair{})
+		db.AutoMigrate(&Category{}, &Game{}, &Pair{}, &TemporaryPair{})
 
 		// db.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&TempImage{})
 

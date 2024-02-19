@@ -1,13 +1,13 @@
 import { Button, Input } from "@nextui-org/react";
 import UploadImage from "./UploadIImag";
-import { Image, TempPair } from "@/models/index";
+import { Image, TempPair, Pair as PairType } from "@/models/index";
 import Pair from "./Pair";
 import { useState } from "react";
 
 interface Props {
 	handleCancelAddPair: () => void;
-	handleSaveNewPair: (pair: TempPair) => void;
-	pair: TempPair;
+	handleSaveNewPair: (pair: PairType) => Promise<void>;
+	pair: PairType;
 }
 
 export default function OldPairEditForm({
@@ -15,6 +15,7 @@ export default function OldPairEditForm({
 	handleSaveNewPair,
 	pair,
 }: Props) {
+	console.log(pair)
 	const [image, setImage] = useState(pair.tempImageCard.image)
 	const [word, setWord] = useState(pair.wordCard.word)
 	return (
@@ -37,7 +38,8 @@ export default function OldPairEditForm({
 				</div>
 
 				<div className=" flex flex-col gap-2">
-					<Button onClick={() => handleSaveNewPair({
+					<Button onClick={async () => await handleSaveNewPair({
+						id: pair.id,
 						tempImageCard: {
 							image: image
 						},
