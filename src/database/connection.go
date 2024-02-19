@@ -8,7 +8,8 @@ import (
 
 	"tcu/src/environment"
 
-	"gorm.io/driver/sqlite"
+	// "gorm.io/driver/sqlite"
+	"github.com/glebarez/sqlite" // Pure go SQLite driver, checkout https://github.com/glebarez/sqlite for details
 	"gorm.io/gorm"
 )
 

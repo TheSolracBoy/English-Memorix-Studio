@@ -21,14 +21,14 @@ func (app *App) AskUserForConfirmation(textPrompt string, title string) bool {
 		Type:    runtime.QuestionDialog,
 		Title:   title,
 		Message: textPrompt,
-		Buttons: []string{"Ok", "Cancel"},
+		Buttons: []string{"Yes", "No"},
 	}
 	result, err := runtime.MessageDialog(app.ctx, options)
 	if err != nil {
 		return false
 
 	}
-	if result == "Ok" {
+	if result == "Yes" {
 		return true
 
 	}
