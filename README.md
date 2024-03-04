@@ -1,50 +1,20 @@
 # English Memorix Studio
-
-Welcome to English Memorix Studio, your go-to memory game maker app for desktop platforms! Create engaging and interactive memory games effortlessly with this sleek and intuitive application.
+An app designed to assist elementary school English teachers in Costa Rica by helping students associate images with new vocabulary words. I developed this project during my time as a college student studying Software Engineering at the University of Costa Rica.
 
 ## Features
-
 - **Easy Game Creation:** Design customized memory games with a user-friendly interface.
-- **Multimedia Integration:** Resize your images inside the app
+- **Multimedia Integration:** Resize your images inside the app.
 - **Desktop Compatibility:** English Memorix Studio supports Windows, macOS, and Linux, providing a seamless experience on your preferred desktop platform.
+- **Portability:** Teachers can make games in their personal computer and play the games in other computers by just copying the db file and the standalone executable (no need to install) to a usb.
+- **No internet needed**
 
-## Building
+## Demo
+https://github.com/charlieman2700/English-Memorix-Studio/assets/62361574/085a3b37-ced8-4aa1-86b4-eb686020a0ca
 
-To build a redistributable, production mode package, use `wails build`.
-
-## Getting Started
-
-1. **Installation:**
-   - Download the latest release from the [Releases](https://github.com/your-username/english-memorix-studio/releases) page.
-   - Follow the installation instructions for your operating system.
-
-2. **Creating a Game:**
-   - Launch English Memorix Studio.
-   - Click on "New Game" to start creating your memory game.
-   - Choose a template or customize your own layout.
-   - Add cards, assign pairs, and include multimedia elements to make your game engaging.
-
-3. **Save and play:**
-   - Save your progress with ease.
-   - Ready to play
-
-## Screenshots
-
-![English Memorix Studio Screenshot 1](./screenshots/screenshot1.png)
-*Create customized memory games effortlessly.*
-
-![English Memorix Studio Screenshot 2](./screenshots/screenshot2.png)
-*Enhance learning with multimedia integration.*
-
-
-## Support
-
-For bug reports, feature requests, or general questions, please [create an issue](https://github.com/your-username/english-memorix-studio/issues).
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
+## Stack
+- **Wails:** GUI framework that allows you to combine web technologies for the GUI and GoLang code for communication with the system or heavy data processing.
+- **TypeScript:** TypeScript extends JavaScript and enhances the developer experience. It helps software developers add type safety to their projects and provides features like type aliases, interfaces, abstract classes, encapsulation, inheritance, and function overloading. 
+- **React:** Component-based, declarative JavaScript library.
+- **Tailwind CSS:** A utility-first CSS framework that helps in creating custom designs without having to leave your HTML.
 
 **English Memorix Studio** - Making memory games fun and easy! 🧠✨
