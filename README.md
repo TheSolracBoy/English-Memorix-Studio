@@ -1,5 +1,5 @@
 # English Memorix Studio
-An app designed to assist elementary school English teachers in Costa Rica by helping students associate images with new vocabulary words. I developed this project during my time as a college student studying Software Engineering at the University of Costa Rica.
+An app designed to assist elementary school English teachers in Costa Rica by helping students associate images with new vocabulary words. I developed this project during my time in college studying Software Engineering at the University of Costa Rica.
 
 ## Features
 - **Easy Game Creation:** Design customized memory games with a user-friendly interface.
