@@ -1,8 +1,17 @@
 build/bin
 node_modules
 frontend/dist
-build
 dev.db
 .db
 tcu.exe
 el_nombre_que_yo_quiera.db
+build/darwin
+build/logo
+build/macOS App Icon Template (Community)
+build/macOS App Icon Template (Community) 2
+build/windows/info.json
+build/windows/wails.exe.manifest
+build/windows/.DS_Store
+build/logo.png
+build/logo.zip
+build/macOS App Icon Template (Community).zip

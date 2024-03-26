@@ -26,7 +26,7 @@ export default function GameInfoEdit({ gameTitle, setGameTitle, newGameDescripti
         aria-labelledby="Enter new game title"
         onValueChange={setGameTitle}
         type="text"
-        placeholder="Enter new Category name"
+        placeholder="Enter game title"
       />
       <Textarea
         value={newGameDescription}
