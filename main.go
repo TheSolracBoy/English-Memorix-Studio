@@ -47,7 +47,7 @@ func main() {
 
 	// Create application with options
 	err := wails.Run(&options.App{
-		Title: "Memory Game Maker",
+		Title: "English Memorix Studio",
 		Width: 1024,
 		// StartHidden: true,
 		Height: 768,
