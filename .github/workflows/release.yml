@@ -41,4 +41,5 @@ jobs:
           build-name: ${{ matrix.build.name }}
           build-platform: ${{ matrix.build.platform }}
           package: false
+          wails-build-webview2: embed
           go-version: '1.21'
