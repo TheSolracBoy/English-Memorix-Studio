@@ -12,6 +12,7 @@
     "@nextui-org/react": "^2.2.9",
     "antd": "^5.9.2",
     "framer-motion": "^10.18.0",
+    "lucide-react": "^0.363.0",
     "react": "^18.2.0",
     "react-advanced-cropper": "^0.19.4",
     "react-dom": "^18.2.0",
